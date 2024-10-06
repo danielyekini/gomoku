@@ -20,8 +20,14 @@ public class Board {
 
     private int[] toAxis(String position) {
         int posX = toX(position.charAt(0));
-        int posY = (16 - Character.getNumericValue(position.charAt(1))) - 1;
-
+        int posY;
+        if (position.length() == 3) {
+            int tens = Character.getNumericValue(position.charAt(1))*10;
+            tens += Character.getNumericValue(position.charAt(2));
+            posY = 15 - tens;
+        } else {
+            posY = 15 - Character.getNumericValue(position.charAt(1));
+        }
         return new int[] {posX, posY};
     }
 
@@ -70,41 +76,14 @@ public class Board {
         System.out.println("\n");
     }
 
-    private int[][] getSearchRadius() {
-        int[] topLeft = new int[] {
-            (lastPos[0]-5 < 0) ? 0 : lastPos[0]-5, // x
-            (lastPos[1]-5 < 0) ? 0 : lastPos[1]-5  // y
-        };
-        int[] topRight = new int[] {
-            (lastPos[0]+5 > gridSize) ? gridSize : lastPos[0]+5, // x
-            (lastPos[1]-5 < 0) ? 0 : lastPos[1]-5                // y
-        };
-        int[] bottomLeft = new int[] {
-            (lastPos[0]-5 < 0) ? 0 : lastPos[0]-5,               // x
-            (lastPos[1]+5 > gridSize) ? gridSize : lastPos[1]+5 // x
-        };
-
-        // Initialise search radius
-        int[][] searchRadius = new int[11][11];
-
-        // Copy search radius in current grid
-        for (int y = topLeft[1]; y < bottomLeft[1]; y++) {
-            for (int x = topLeft[0]; x < topRight[0]; x++) {
-                searchRadius[y-topLeft[1]][x-topLeft[0]] = grid[y][x];
-            }
-        }
-
-        return searchRadius;
-    }
-
     public boolean checkWin() {
         // int[][] searchRadius = getSearchRadius();
         int lastPlayer = grid[lastPos[1]][lastPos[0]];
         int count = 0;
 
         // Check for horizontal win
-        int start = lastPos[0]-4;
-        int end = lastPos[0]+4;
+        int start = (lastPos[0]-4 < 0) ? 0 : lastPos[0]-4;
+        int end = (lastPos[0]+4 < 0) ? 0 : lastPos[0]+4;
 
         for (int i = start; i < end; i++) {
             if (grid[lastPos[1]][i] == lastPlayer) {
@@ -118,8 +97,8 @@ public class Board {
         }
 
         // Check for vertical win
-        start = lastPos[1]-4;
-        end = lastPos[1]+4;
+        start = (lastPos[1]-4 < 0) ? 0 : lastPos[1]-4;
+        end = (lastPos[1]+4 < 0) ? 0 : lastPos[1]+4;
 
         for (int i = start; i < end; i++) {
             if (grid[i][lastPos[0]] == lastPlayer) {
@@ -127,8 +106,9 @@ public class Board {
                 if (count == 5) {
                     return true;
                 }
+            } else {
+                count = 0;
             }
-            count = 0;
         }
 
         return false;

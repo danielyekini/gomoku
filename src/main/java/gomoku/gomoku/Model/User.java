@@ -22,9 +22,12 @@ public class User {
     }
 
     public boolean isValid(String input) {
-        if (input.length() == 2) {
+        if (input.length() == 2 || input.length() == 3) {
             if (Character.isLetter(input.charAt(0))) {
                 if(Character.isDigit(input.charAt(1))) {
+                    if (input.length() == 3 && !Character.isDigit(input.charAt(2))) {
+                        return false;
+                    }
                     return true;
                 }
             }
