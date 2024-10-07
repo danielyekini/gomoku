@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import gomoku.gomoku.Model.Board;
 
 @SpringBootTest
-public class WinningConditionsTest {
+public class WinningConditionsTests {
 
     private Board board;
 

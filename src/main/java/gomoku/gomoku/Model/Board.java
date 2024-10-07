@@ -18,16 +18,22 @@ public class Board {
         return Character.toUpperCase(letter) - 'A';
     }
 
-    private int[] toAxis(String position) {
-        int posX = toX(position.charAt(0));
+    private int toY(String number) {
         int posY;
-        if (position.length() == 3) {
-            int tens = Character.getNumericValue(position.charAt(1))*10;
-            tens += Character.getNumericValue(position.charAt(2));
+        if (number.length() == 2) {
+            int tens = Character.getNumericValue(number.charAt(0))*10;
+            tens += Character.getNumericValue(number.charAt(1));
             posY = 15 - tens;
         } else {
-            posY = 15 - Character.getNumericValue(position.charAt(1));
+            posY = 15 - Character.getNumericValue(number.charAt(0));
         }
+
+        return posY;
+    }
+    
+    private int[] toAxis(String position) {
+        int posX = toX(position.charAt(0));
+        int posY = toY(position.substring(1));
         return new int[] {posX, posY};
     }
 
@@ -37,13 +43,13 @@ public class Board {
 
     public boolean placePosition(int player, String position ) {
         int[] axis = toAxis(position);
-        lastPos = axis;
         int posX = axis[0];
         int posY = axis[1];
 
         // Check if position is available before placing piece
-        if (posAvailable(posX, posY)) {
+        if (posAvailable(posX, posY) && grid[lastPos[1]][lastPos[0]] != player) {
             grid[posY][posX] = player;
+            lastPos = axis;
             return true;
         }
 
