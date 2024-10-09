@@ -15,7 +15,12 @@ public class Board {
     }
     
     private int toX(char letter) {
-        return Character.toUpperCase(letter) - 'A';
+        int posX = Character.toUpperCase(letter) - 'A';
+
+        if (posX < 0 || posX > gridSize-1) {
+            return -1;
+        }
+        return posX;
     }
 
     private int toY(String number) {
@@ -26,6 +31,10 @@ public class Board {
             posY = 15 - tens;
         } else {
             posY = 15 - Character.getNumericValue(number.charAt(0));
+        }
+
+        if (posY < 0 || posY > gridSize-1) {
+            return -1;
         }
 
         return posY;
@@ -45,6 +54,10 @@ public class Board {
         int[] axis = toAxis(position);
         int posX = axis[0];
         int posY = axis[1];
+
+        if (posX == -1 || posY == -1) {
+            return false;
+        }
 
         // Check if position is available before placing piece
         if (posAvailable(posX, posY) && grid[lastPos[1]][lastPos[0]] != player) {
