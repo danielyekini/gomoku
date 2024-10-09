@@ -15,13 +15,34 @@ public class Board {
     }
     
     private int toX(char letter) {
-        return Character.toUpperCase(letter) - 'A';
+        int posX = Character.toUpperCase(letter) - 'A';
+
+        if (posX < 0 || posX > gridSize-1) {
+            return -1;
+        }
+        return posX;
     }
 
+    private int toY(String number) {
+        int posY;
+        if (number.length() == 2) {
+            int tens = Character.getNumericValue(number.charAt(0))*10;
+            tens += Character.getNumericValue(number.charAt(1));
+            posY = 15 - tens;
+        } else {
+            posY = 15 - Character.getNumericValue(number.charAt(0));
+        }
+
+        if (posY < 0 || posY > gridSize-1) {
+            return -1;
+        }
+
+        return posY;
+    }
+    
     private int[] toAxis(String position) {
         int posX = toX(position.charAt(0));
-        int posY = (16 - Character.getNumericValue(position.charAt(1))) - 1;
-
+        int posY = toY(position.substring(1));
         return new int[] {posX, posY};
     }
 
@@ -29,19 +50,19 @@ public class Board {
         return grid[posY][posX] == 0;
     }
 
-    public void gridSize(int size) {
-        gridSize = size;
-    }
-
     public boolean placePosition(int player, String position ) {
         int[] axis = toAxis(position);
-        lastPos = axis;
         int posX = axis[0];
         int posY = axis[1];
 
+        if (posX == -1 || posY == -1) {
+            return false;
+        }
+
         // Check if position is available before placing piece
-        if (posAvailable(posX, posY)) {
+        if (posAvailable(posX, posY) && grid[lastPos[1]][lastPos[0]] != player) {
             grid[posY][posX] = player;
+            lastPos = axis;
             return true;
         }
 
@@ -70,43 +91,12 @@ public class Board {
         System.out.println("\n");
     }
 
-    private int[][] getSearchRadius() {
-        int[] topLeft = new int[] {
-            (lastPos[0]-5 < 0) ? 0 : lastPos[0]-5, // x
-            (lastPos[1]-5 < 0) ? 0 : lastPos[1]-5  // y
-        };
-        int[] topRight = new int[] {
-            (lastPos[0]+5 > gridSize) ? gridSize : lastPos[0]+5, // x
-            (lastPos[1]-5 < 0) ? 0 : lastPos[1]-5                // y
-        };
-        int[] bottomLeft = new int[] {
-            (lastPos[0]-5 < 0) ? 0 : lastPos[0]-5,               // x
-            (lastPos[1]+5 > gridSize) ? gridSize : lastPos[1]+5 // x
-        };
-
-        // Initialise search radius
-        int[][] searchRadius = new int[11][11];
-
-        // Copy search radius in current grid
-        for (int y = topLeft[1]; y < bottomLeft[1]; y++) {
-            for (int x = topLeft[0]; x < topRight[0]; x++) {
-                searchRadius[y-topLeft[1]][x-topLeft[0]] = grid[y][x];
-            }
-        }
-
-        return searchRadius;
-    }
-
-    public boolean checkWin() {
-        // int[][] searchRadius = getSearchRadius();
-        int lastPlayer = grid[lastPos[1]][lastPos[0]];
+    private boolean checkHorizontal(int lastPlayer) {
+        int start = (lastPos[0]-4 < 0) ? 0 : lastPos[0]-4;
+        int end = (lastPos[0]+4 > 14) ? 14 : lastPos[0]+4;
         int count = 0;
 
-        // Check for horizontal win
-        int start = lastPos[0]-4;
-        int end = lastPos[0]+4;
-
-        for (int i = start; i < end; i++) {
+        for (int i = start; i <= end; i++) {
             if (grid[lastPos[1]][i] == lastPlayer) {
                 count++;
                 if (count == 5) {
@@ -117,20 +107,78 @@ public class Board {
             }
         }
 
-        // Check for vertical win
-        start = lastPos[1]-4;
-        end = lastPos[1]+4;
+        return false;
+    }
 
-        for (int i = start; i < end; i++) {
+    private boolean checkVertical(int lastPlayer) {
+        int start = (lastPos[1]-4 < 0) ? 0 : lastPos[1]-4;
+        int end = (lastPos[1]+4 > 14) ? 14 : lastPos[1]+4;
+        int count = 0;
+
+        for (int i = start; i <= end; i++) {
             if (grid[i][lastPos[0]] == lastPlayer) {
                 count++;
                 if (count == 5) {
                     return true;
                 }
+            } else {
+                count = 0;
             }
-            count = 0;
         }
 
         return false;
+    }
+
+    private boolean checkDiagonal1(int lastPlayer) {
+        int startX = (lastPos[0]-4 < 0) ? 0 : lastPos[0]-4;
+        int endX = (lastPos[0]+4 > 14) ? 14 : lastPos[0]+4;
+        int startY = (lastPos[1]-4 < 0) ? 0 : lastPos[1]-4;
+        int endY = (lastPos[1]+4 > 14) ? 14 : lastPos[1]+4;
+        int count = 0;
+
+        while (startX <= endX && startY <= endY) {
+            if (grid[startY][startX] == lastPlayer) {
+                count++;
+                if (count == 5) {
+                    return true;
+                }
+            } else {
+                count = 0;
+            }
+            startX++;
+            startY++;
+        }
+
+        return false;
+    }
+
+    private boolean checkDiagonal2(int lastPlayer) {
+        int startX = (lastPos[0]+4 > 14) ? 14 : lastPos[0]+4;
+        int endX = (lastPos[0]-4 < 0) ? 0 : lastPos[0]-4;
+        int startY = (lastPos[1]-4 < 0) ? 0 : lastPos[1]-4;
+        int endY = (lastPos[1]+4 > 14) ? 14 : lastPos[1]+4;
+        int count = 0;
+
+        while (startX >= endX && startY <= endY) {
+            if (grid[startY][startX] == lastPlayer) {
+                count++;
+                if (count == 5) {
+                    return true;
+                }
+            } else {
+                count = 0;
+            }
+            startX--;
+            startY++;
+        }
+
+        return false;
+    }
+
+    public boolean checkWin() {
+        // int[][] searchRadius = getSearchRadius();
+        int lastPlayer = grid[lastPos[1]][lastPos[0]];
+
+        return checkHorizontal(lastPlayer) || checkVertical(lastPlayer) || checkDiagonal1(lastPlayer) || checkDiagonal2(lastPlayer);
     }
 }

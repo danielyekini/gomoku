@@ -25,8 +25,10 @@ public class GameControl {
         }
         if (!board.checkWin()) {
             System.out.println("\n???\n");
+        } else {
+            System.out.println("Winner");
         }
         
-        System.out.println("Winner");
+        
     }
 }
