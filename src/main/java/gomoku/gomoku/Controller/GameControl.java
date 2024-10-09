@@ -1,28 +1,31 @@
 package gomoku.gomoku.Controller;
 
 import gomoku.gomoku.Model.*;
+import gomoku.gomoku.Model.CPUPlayers.CPUPlayer;
+import gomoku.gomoku.Model.CPUPlayers.CPURandom;
 
 public class GameControl {
 
     Board board;
+    CPUPlayer cpu;
     User user;
 
     public GameControl() {
         board = new Board();
         user = new User();
+        cpu = new CPURandom();
     }
 
     public static void menu() {}
 
     public void start() {
-        String userPos;
         board.printBoard();
         while (!board.checkWin()) {
-            userPos = user.play();
+            String userPos = user.play();
             board.placePosition(1, userPos);
             board.printBoard();
-            userPos = user.play();
-            board.placePosition(2, userPos);
+            String cpuPos = cpu.play(board);
+            board.placePosition(2, cpuPos);
             board.printBoard();
         }
         if (!board.checkWin()) {

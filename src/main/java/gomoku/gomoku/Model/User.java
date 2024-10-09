@@ -1,6 +1,6 @@
 package gomoku.gomoku.Model;
 
-import gomoku.gomoku.Controller.Input;
+import gomoku.gomoku.util.Input;
 
 public class User {
 

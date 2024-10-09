@@ -1,17 +1,24 @@
 package gomoku.gomoku.Model;
 
 import java.util.Arrays;
+import java.util.List;
+
+import org.apache.logging.log4j.util.StringBuilders;
+
+import java.util.ArrayList;
 
 public class Board {
 
     private int[][] grid;
     private int[] lastPos;
     private int gridSize;
+    private List<String> availableMoves;
 
     public Board() {
         this.gridSize = 15;
         this.grid = new int[gridSize][gridSize];
         this.lastPos = new int[2];
+        this.availableMoves = setAvailableMoves();
     }
     
     private int toX(char letter) {
@@ -50,6 +57,26 @@ public class Board {
         return grid[posY][posX] == 0;
     }
 
+    private List<String> setAvailableMoves() {
+        List<String> availableMoves = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+
+        for (int y = 0; y < grid.length; y++) {
+            for (int x = 0; x < grid[0].length; x++) {
+                if (grid[y][x] == 0) {
+                    char letter = 'A';
+                    letter+=x;
+                    sb.append(letter);
+                    sb.append(gridSize - y);
+                    availableMoves.add(sb.toString());
+                    sb.setLength(0);
+                }
+            }
+        }
+
+        return availableMoves;
+    }
+
     public boolean placePosition(int player, String position ) {
         int[] axis = toAxis(position);
         int posX = axis[0];
@@ -68,6 +95,7 @@ public class Board {
         // Check if position is available before placing piece
         if (posAvailable(posX, posY) && grid[lastPos[1]][lastPos[0]] != player) {
             grid[posY][posX] = player;
+            availableMoves.remove(position.toUpperCase());
             lastPos = axis;
             return true;
         }
@@ -95,6 +123,10 @@ public class Board {
             System.out.print("  ");
         }
         System.out.println("\n");
+    }
+
+    public List<String> getAvailiableMoves() {
+        return availableMoves;
     }
 
     private boolean checkHorizontal(int lastPlayer) {

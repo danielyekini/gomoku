@@ -1,4 +1,4 @@
-package gomoku.gomoku.Controller;
+package gomoku.gomoku.util;
 
 import java.util.Scanner;
 
