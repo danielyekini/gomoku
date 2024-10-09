@@ -51,6 +51,12 @@ public class BoardTests {
     }
 
     @Test
+    public void testOutOfBoundsMoveNegative() {
+        // Player 2 attempts to place a piece in a negative position (nonexistent position)
+        assertFalse(board.placePosition(2, "-1"), "Position '-1' should be invalid");
+    }
+
+    @Test
     public void testInvalidPositionFormat() {
         // Try placing a piece with an invalid format (e.g., missing a number)
         assertThrows(StringIndexOutOfBoundsException.class, () -> {

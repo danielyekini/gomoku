@@ -28,8 +28,15 @@ public class WinningConditionsTests {
     @Test
     public void testHorizontalWin() {
         // Player 1 places 5 pieces horizontally
-        String[] moves = {"A15", "B15", "C15", "D15", "E15"};
-        placeMoves(board, 1, moves);
+        String[] movesPlayer1 = {"A15", "B15", "C15", "D15", "E15"};
+        String[] movesPlayer2 = {"A1", "B1", "C1", "D1"};
+
+        for (int i = 0; i < movesPlayer2.length; i++) {
+            board.placePosition(1, movesPlayer1[i]);
+            board.placePosition(2, movesPlayer2[i]);
+        }
+
+        board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
         assertTrue(board.checkWin());
@@ -38,8 +45,15 @@ public class WinningConditionsTests {
     @Test
     public void testVerticalWin() {
         // Player 2 places 5 pieces vertically
-        String[] moves = {"A15", "A14", "A13", "A12", "A11"};
-        placeMoves(board, 2, moves);
+        String[] movesPlayer1 = {"A15", "A14", "A13", "A12", "A11"};
+        String[] movesPlayer2 = {"A1", "B1", "C1", "D1"};
+
+        for (int i = 0; i < movesPlayer2.length; i++) {
+            board.placePosition(1, movesPlayer1[i]);
+            board.placePosition(2, movesPlayer2[i]);
+        }
+
+        board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
         assertTrue(board.checkWin());
@@ -48,8 +62,15 @@ public class WinningConditionsTests {
     @Test
     public void testDiagonalWin1() {
         // Player 1 places 5 pieces diagonally (top-left to bottom-right)
-        String[] moves = {"A15", "B14", "C13", "D12", "E11"};
-        placeMoves(board, 1, moves);
+        String[] movesPlayer1 = {"A15", "B14", "C13", "D12", "E11"};
+        String[] movesPlayer2 = {"A1", "B1", "C1", "D1"};
+
+        for (int i = 0; i < movesPlayer2.length; i++) {
+            board.placePosition(1, movesPlayer1[i]);
+            board.placePosition(2, movesPlayer2[i]);
+        }
+
+        board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
         assertTrue(board.checkWin());
@@ -58,8 +79,15 @@ public class WinningConditionsTests {
     @Test
     public void testDiagonalWin2() {
         // Player 2 places 5 pieces diagonally (bottom-left to top-right)
-        String[] moves = {"E11", "D12", "C13", "B14", "A15"};
-        placeMoves(board, 2, moves);
+        String[] movesPlayer1 = {"E11", "D12", "C13", "B14", "A15"};
+        String[] movesPlayer2 = {"A1", "B1", "C1", "D1"};
+
+        for (int i = 0; i < movesPlayer2.length; i++) {
+            board.placePosition(1, movesPlayer1[i]);
+            board.placePosition(2, movesPlayer2[i]);
+        }
+
+        board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
         assertTrue(board.checkWin());
@@ -68,8 +96,15 @@ public class WinningConditionsTests {
     @Test
     public void testNoWin() {
         // Player 1 places some pieces but doesn't form a line
-        String[] moves = {"A15", "B14", "C13", "D15", "E11"};
-        placeMoves(board, 1, moves);
+        String[] movesPlayer1 = {"A15", "B14", "C13", "D15", "E11"};
+        String[] movesPlayer2 = {"A1", "B1", "C1", "D1"};
+
+        for (int i = 0; i < movesPlayer2.length; i++) {
+            board.placePosition(1, movesPlayer1[i]);
+            board.placePosition(2, movesPlayer2[i]);
+        }
+
+        board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that no win is detected
         assertFalse(board.checkWin());
@@ -80,8 +115,15 @@ public class WinningConditionsTests {
     @Test
     public void testEdgeHorizontalWin() {
         // Player 1 places 5 pieces horizontally at the top edge
-        String[] moves = {"K15", "L15", "M15", "N15", "O15"};
-        placeMoves(board, 1, moves);
+        String[] movesPlayer1 = {"K15", "L15", "M15", "N15", "O15"};
+        String[] movesPlayer2 = {"A1", "B1", "C1", "D1"};
+
+        for (int i = 0; i < movesPlayer2.length; i++) {
+            board.placePosition(1, movesPlayer1[i]);
+            board.placePosition(2, movesPlayer2[i]);
+        }
+
+        board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
         assertTrue(board.checkWin());
@@ -90,8 +132,15 @@ public class WinningConditionsTests {
     @Test
     public void testEdgeVerticalWin() {
         // Player 2 places 5 pieces vertically at the left edge
-        String[] moves = {"A15", "A14", "A13", "A12", "A11"};
-        placeMoves(board, 2, moves);
+        String[] movesPlayer1 = {"A15", "A14", "A13", "A12", "A11"};
+        String[] movesPlayer2 = {"A1", "B1", "C1", "D1"};
+
+        for (int i = 0; i < movesPlayer2.length; i++) {
+            board.placePosition(1, movesPlayer1[i]);
+            board.placePosition(2, movesPlayer2[i]);
+        }
+
+        board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
         assertTrue(board.checkWin());
@@ -100,8 +149,15 @@ public class WinningConditionsTests {
     @Test
     public void testTopLeftCornerDiagonalWin() {
         // Player 1 places 5 pieces diagonally from the top-left corner
-        String[] moves = {"A15", "B14", "C13", "D12", "E11"};
-        placeMoves(board, 1, moves);
+        String[] movesPlayer1 = {"A15", "B14", "C13", "D12", "E11"};
+        String[] movesPlayer2 = {"A1", "B1", "C1", "D1"};
+
+        for (int i = 0; i < movesPlayer2.length; i++) {
+            board.placePosition(1, movesPlayer1[i]);
+            board.placePosition(2, movesPlayer2[i]);
+        }
+
+        board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
         // Assert that the board detects a win
         assertTrue(board.checkWin());
     }
@@ -109,8 +165,15 @@ public class WinningConditionsTests {
     @Test
     public void testBottomRightCornerDiagonalWin() {
         // Player 2 places 5 pieces diagonally from the bottom-right corner
-        String[] moves = {"O1", "N2", "M3", "L4", "K5"};
-        placeMoves(board, 2, moves);
+        String[] movesPlayer1 = {"O1", "N2", "M3", "L4", "K5"};
+        String[] movesPlayer2 = {"A1", "B1", "C1", "D1"};
+
+        for (int i = 0; i < movesPlayer2.length; i++) {
+            board.placePosition(1, movesPlayer1[i]);
+            board.placePosition(2, movesPlayer2[i]);
+        }
+
+        board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
         // Assert that the board detects a win
         assertTrue(board.checkWin());
     }
@@ -118,8 +181,15 @@ public class WinningConditionsTests {
     @Test
     public void testHorizontalNearRightEdge() {
         // Player 1 places 5 pieces horizontally near the right edge, but not overflowing
-        String[] moves = {"K1", "L1", "M1", "N1", "O1"};
-        placeMoves(board, 1, moves);
+        String[] movesPlayer1 = {"K1", "L1", "M1", "N1", "O1"};
+        String[] movesPlayer2 = {"A1", "B1", "C1", "D1"};
+
+        for (int i = 0; i < movesPlayer2.length; i++) {
+            board.placePosition(1, movesPlayer1[i]);
+            board.placePosition(2, movesPlayer2[i]);
+        }
+
+        board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
         // Assert that the board detects a win
         assertTrue(board.checkWin());
     }
@@ -127,8 +197,15 @@ public class WinningConditionsTests {
     @Test
     public void testVerticalNearBottomEdge() {
         // Player 2 places 5 pieces vertically near the bottom edge, but not overflowing
-        String[] moves = {"O1", "O2", "O3", "O4", "O5"};
-        placeMoves(board, 2, moves);
+        String[] movesPlayer1 = {"O1", "O2", "O3", "O4", "O5"};
+        String[] movesPlayer2 = {"A1", "B1", "C1", "D1"};
+
+        for (int i = 0; i < movesPlayer2.length; i++) {
+            board.placePosition(1, movesPlayer1[i]);
+            board.placePosition(2, movesPlayer2[i]);
+        }
+
+        board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
         // Assert that the board detects a win
         assertTrue(board.checkWin());
     }
@@ -136,9 +213,15 @@ public class WinningConditionsTests {
     @Test
     public void testNoWinNearEdge() {
         // Player 1 places some pieces near the edges but doesn't form a line
-        String[] moves = {"O1", "N2", "M3", "L1", "K1"};
-        placeMoves(board, 1, moves);
+        String[] movesPlayer1 = {"O1", "N2", "M3", "L1", "K1"};
+        String[] movesPlayer2 = {"A1", "B1", "C1", "D1"};
 
+        for (int i = 0; i < movesPlayer2.length; i++) {
+            board.placePosition(1, movesPlayer1[i]);
+            board.placePosition(2, movesPlayer2[i]);
+        }
+
+        board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
         // Assert that no win is detected
         assertFalse(board.checkWin());
     }

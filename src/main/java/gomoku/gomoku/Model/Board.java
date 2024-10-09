@@ -55,6 +55,12 @@ public class Board {
         int posX = axis[0];
         int posY = axis[1];
 
+        // Check if player number is valid
+        if (player < 1 || player > 2) {
+            return false;
+        }
+
+        // Check if x and y coordinates are valid
         if (posX == -1 || posY == -1) {
             return false;
         }
@@ -178,6 +184,10 @@ public class Board {
     public boolean checkWin() {
         // int[][] searchRadius = getSearchRadius();
         int lastPlayer = grid[lastPos[1]][lastPos[0]];
+
+        if (lastPlayer == 0) {
+            return false;
+        }
 
         return checkHorizontal(lastPlayer) || checkVertical(lastPlayer) || checkDiagonal1(lastPlayer) || checkDiagonal2(lastPlayer);
     }

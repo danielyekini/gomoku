@@ -15,13 +15,15 @@ public class GameControl {
     public static void menu() {}
 
     public void start() {
-        int i = 5;
+        String userPos;
         board.printBoard();
-        while (i > 0) {
-            String userPos = user.play();
+        while (!board.checkWin()) {
+            userPos = user.play();
             board.placePosition(1, userPos);
             board.printBoard();
-            i--;
+            userPos = user.play();
+            board.placePosition(2, userPos);
+            board.printBoard();
         }
         if (!board.checkWin()) {
             System.out.println("\n???\n");
