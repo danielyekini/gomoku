@@ -1,8 +1,9 @@
 package gomoku.gomoku.Model;
 
+import gomoku.gomoku.Model.CPUPlayers.Player;
 import gomoku.gomoku.util.Input;
 
-public class User {
+public class User extends Player {
 
     Input in;
 

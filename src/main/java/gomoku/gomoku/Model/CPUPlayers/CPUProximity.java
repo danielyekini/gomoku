@@ -5,19 +5,19 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import gomoku.gomoku.Model.Board;
-import gomoku.gomoku.Services.IProximityService;
+import gomoku.gomoku.Services.IBoardService;
 
 public class CPUProximity extends CPUPlayer {
 
     private List<String> startArea;
     private boolean firstMove;
     private String lastMove;
-    private IProximityService service;
+    private IBoardService service;
 
-    public CPUProximity(IProximityService proximityService) {
+    public CPUProximity(IBoardService boardService) {
         this.firstMove = true;
         this.startArea = getStartArea();
-        this.service = proximityService;
+        this.service = boardService;
     }
 
     @Override
