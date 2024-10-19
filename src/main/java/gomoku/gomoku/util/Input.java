@@ -10,23 +10,23 @@ public class Input {
         this.scan = new Scanner(System.in);
     }
 
-    public String String(String input_string){
-        System.out.print(input_string);
+    public String String(String inputString){
+        System.out.print(inputString);
         return scan.nextLine();
     }
 
-    public char Character(String input_string){
-        System.out.print(input_string);
+    public char Character(String inputString){
+        System.out.print(inputString);
         return scan.next().charAt(0);
     }
 
-    public int Integer(String input_string){
-        System.out.print(input_string);
+    public int Integer(String inputString){
+        System.out.print(inputString);
         return scan.nextInt();
     }
 
-    public double Double(String input_string){
-        System.out.print(input_string);
+    public double Double(String inputString){
+        System.out.print(inputString);
         return scan.nextDouble();
     }
 }
