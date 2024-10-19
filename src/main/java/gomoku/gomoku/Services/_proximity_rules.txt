@@ -1,0 +1,9 @@
+1. If this is your first move play inside your area
+    1.1. If you are an inside player you play in the area inside the four main corners 
+    1.2. If you are an outside player you play in the area outside the four main corners
+
+2. Each move you make after must be played within the area inside the perimeter of the last move you made and the last move the opponent made
+
+3. If there are no free spaces in that area, expand the playable area by 1 cell on every side.
+
+4. Repeat step 3 until an a valid move has been found

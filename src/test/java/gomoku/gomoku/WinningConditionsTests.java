@@ -39,7 +39,7 @@ public class WinningConditionsTests {
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
-        assertTrue(board.checkWin());
+        assertTrue(board.checkWin() == 1);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class WinningConditionsTests {
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
-        assertTrue(board.checkWin());
+        assertTrue(board.checkWin() == 1);
     }
 
     @Test
@@ -73,7 +73,7 @@ public class WinningConditionsTests {
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
-        assertTrue(board.checkWin());
+        assertTrue(board.checkWin() == 1);
     }
 
     @Test
@@ -90,7 +90,7 @@ public class WinningConditionsTests {
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
-        assertTrue(board.checkWin());
+        assertTrue(board.checkWin() == 1);
     }
 
     @Test
@@ -107,7 +107,7 @@ public class WinningConditionsTests {
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that no win is detected
-        assertFalse(board.checkWin());
+        assertFalse(board.checkWin() == 1);
     }
 
     // --- Edge Case Tests ---
@@ -126,7 +126,7 @@ public class WinningConditionsTests {
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
-        assertTrue(board.checkWin());
+        assertTrue(board.checkWin() == 1);
     }
 
     @Test
@@ -143,7 +143,7 @@ public class WinningConditionsTests {
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
-        assertTrue(board.checkWin());
+        assertTrue(board.checkWin() == 1);
     }
 
     @Test
@@ -159,7 +159,7 @@ public class WinningConditionsTests {
 
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
         // Assert that the board detects a win
-        assertTrue(board.checkWin());
+        assertTrue(board.checkWin() == 1);
     }
 
     @Test
@@ -175,7 +175,7 @@ public class WinningConditionsTests {
 
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
         // Assert that the board detects a win
-        assertTrue(board.checkWin());
+        assertTrue(board.checkWin() == 1);
     }
 
     @Test
@@ -191,7 +191,7 @@ public class WinningConditionsTests {
 
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
         // Assert that the board detects a win
-        assertTrue(board.checkWin());
+        assertTrue(board.checkWin() == 1);
     }
 
     @Test
@@ -207,7 +207,7 @@ public class WinningConditionsTests {
 
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
         // Assert that the board detects a win
-        assertTrue(board.checkWin());
+        assertTrue(board.checkWin() == 1);
     }
 
     @Test
@@ -223,7 +223,7 @@ public class WinningConditionsTests {
 
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
         // Assert that no win is detected
-        assertFalse(board.checkWin());
+        assertFalse(board.checkWin() == 1);
     }
 
     // --- Simulating a Real Game ---
@@ -240,7 +240,7 @@ public class WinningConditionsTests {
 
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
 
-        assertTrue(board.checkWin());
+        assertTrue(board.checkWin() == 1);
     }
 
     @Test
@@ -255,7 +255,7 @@ public class WinningConditionsTests {
 
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
 
-        assertTrue(board.checkWin());
+        assertTrue(board.checkWin() == 1);
     }
 
     @Test
@@ -268,7 +268,7 @@ public class WinningConditionsTests {
             board.placePosition(2, movesPlayer2[i]);
         }
 
-        assertFalse(board.checkWin());
+        assertFalse(board.checkWin() == 1);
     }
 }
 

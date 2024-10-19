@@ -1,14 +1,19 @@
 package gomoku.gomoku;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import gomoku.gomoku.Model.Board;
+import gomoku.gomoku.Services.ProximityService;
 
 @SpringBootTest
 public class BoardTests {
@@ -59,9 +64,7 @@ public class BoardTests {
     @Test
     public void testInvalidPositionFormat() {
         // Try placing a piece with an invalid format (e.g., missing a number)
-        assertThrows(StringIndexOutOfBoundsException.class, () -> {
-            board.placePosition(1, "A");  // Invalid format: No y-coordinate
-        });
+        assertFalse(board.placePosition(1, "A"));  // Invalid format: No y-coordinate
     }
 
     @Test
@@ -105,5 +108,58 @@ public class BoardTests {
         assertTrue(board.placePosition(2, "B10"));
         assertFalse(board.placePosition(2, "C20")); // Out of bounds Y-axis
         assertTrue(board.placePosition(1, "C10"));
+    }
+
+    @Test
+    void testInitialAvailableMoves() {
+        // All positions should be available initially (15x15 board = 225 positions)
+        List<String> availableMoves = board.getAvailableMoves();
+        assertEquals(225, availableMoves.size(), "Initial available moves should be 225.");
+
+        // Check that certain positions exist in the list
+        assertTrue(availableMoves.contains("A15"), "A15 should be available at the start.");
+        assertTrue(availableMoves.contains("O1"), "O1 should be available at the start.");
+        assertTrue(availableMoves.contains("H8"), "H8 should be available at the start.");
+    }
+
+    @Test
+    void testAvailableMovesAfterValidMove() {
+        // Place a valid move at A15
+        board.placePosition(1, "A15");
+
+        // A15 should no longer be available
+        List<String> availableMoves = board.getAvailableMoves();
+        assertEquals(224, availableMoves.size(), "Available moves should be 224 after one move.");
+        assertFalse(availableMoves.contains("A15"), "A15 should no longer be available after the move.");
+    }
+
+    @Test
+    void testAvailableMovesAfterMultipleMoves() {
+        // Place valid moves at A15, B14, and C13
+        board.placePosition(1, "A15");
+        board.placePosition(2, "B14");
+        board.placePosition(1, "C13");
+
+        // A15, B14, and C13 should no longer be available
+        List<String> availableMoves = board.getAvailableMoves();
+        assertEquals(222, availableMoves.size(), "Available moves should be 222 after three moves.");
+        assertFalse(availableMoves.contains("A15"), "A15 should no longer be available after the move.");
+        assertFalse(availableMoves.contains("B14"), "B14 should no longer be available after the move.");
+        assertFalse(availableMoves.contains("C13"), "C13 should no longer be available after the move.");
+    }
+
+    @Test
+    void testAvailableMovesAfterInvalidMove() {
+        // Place a valid move at A15
+        board.placePosition(1, "A15");
+
+        // Try to place a move again at A15, which is invalid
+        boolean moveResult = board.placePosition(2, "A15");
+
+        // A15 should still be unavailable, and the size of available moves should not change
+        assertFalse(moveResult, "Placing a move on an occupied spot should return false.");
+        List<String> availableMoves = board.getAvailableMoves();
+        assertEquals(224, availableMoves.size(), "Available moves should still be 224 after an invalid move.");
+        assertFalse(availableMoves.contains("A15"), "A15 should remain unavailable after the invalid move.");
     }
 }

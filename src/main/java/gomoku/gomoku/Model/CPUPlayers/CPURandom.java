@@ -9,13 +9,12 @@ public class CPURandom extends CPUPlayer {
 
     @Override
     public String play(Board board) {
-        List<String> availableMoves = board.getAvailiableMoves();
+        List<String> availableMoves = board.getAvailableMoves();
 
         Random random = new Random();
         String move = availableMoves.get(random.nextInt(availableMoves.size()));
 
         return move;
     }
-    
     
 }
