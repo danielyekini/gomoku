@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import gomoku.gomoku.Model.Board;
 
-public class ProximityService implements IProximityService {
+public class BoardService implements IBoardService {
 
     @Override
     public List<String> getAvailableMoves(Board board, String[] areaPoints) {

@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import gomoku.gomoku.Model.Board;
-import gomoku.gomoku.Services.ProximityService;
 
 @SpringBootTest
 public class BoardTests {

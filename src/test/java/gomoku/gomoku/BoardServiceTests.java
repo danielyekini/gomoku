@@ -10,25 +10,25 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import gomoku.gomoku.Model.Board;
-import gomoku.gomoku.Services.ProximityService;
+import gomoku.gomoku.Services.BoardService;
 
 @SpringBootTest
-public class ProximityServiceTests {
+public class BoardServiceTests {
 
     private Board board;
-    private ProximityService proximityService;
+    private BoardService boardService;
 
     @BeforeEach
     void setUp() {
         board = new Board();
-        proximityService = new ProximityService();
+        boardService = new BoardService();
     }
 
     @Test
     void testGetAvailableMovesWithinEmptyArea() {
         String[] areaPoints = {"A15", "C13"};
         
-        List<String> availableMoves = proximityService.getAvailableMoves(board, areaPoints);
+        List<String> availableMoves = boardService.getAvailableMoves(board, areaPoints);
         List<String> expectedMoves = List.of("A15", "B15", "C15", "A14", "B14", "C14", "A13", "B13", "C13");
         
         assertEquals(expectedMoves, availableMoves);
@@ -39,7 +39,7 @@ public class ProximityServiceTests {
         board.placePosition(1, "B14"); // Mark B14 as occupied
         String[] areaPoints = {"A15", "C13"};
         
-        List<String> availableMoves = proximityService.getAvailableMoves(board, areaPoints);
+        List<String> availableMoves = boardService.getAvailableMoves(board, areaPoints);
         List<String> expectedMoves = List.of("A15", "B15", "C15", "A14", "C14", "A13", "B13", "C13");
         
         assertEquals(expectedMoves, availableMoves);
@@ -49,7 +49,7 @@ public class ProximityServiceTests {
     void testGetProximityArea() {
         board.placePosition(1, "J10");  // Set last move to J10
         
-        String[] proximityArea = proximityService.getProximityArea(board, "B14");
+        String[] proximityArea = boardService.getProximityArea(board, "B14");
         String[] expectedArea = {"B14", "J10"};
         
         assertArrayEquals(expectedArea, proximityArea);
