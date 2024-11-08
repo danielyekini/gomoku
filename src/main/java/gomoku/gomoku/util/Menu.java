@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import gomoku.gomoku.Model.*;
 import gomoku.gomoku.Model.CPUPlayers.*;
 import gomoku.gomoku.Services.ProximityService;
+import gomoku.gomoku.util.enums.*;
 
 public class Menu {
     Input in;
@@ -25,36 +26,36 @@ public class Menu {
         }
     }
 
-    private int menuOptions(String menuType) {
+    private int menuOptions(MenuType menuType) {
         int numOptions = 0;
         System.out.println("\n");
+
         switch (menuType) {
-            case "main":
-                System.out.println("1. Play");
-                System.out.println("2. Simulate");
-                System.out.println("3. Train");
-                System.out.println("4. Exit");
-                numOptions = 4;
+            case MAIN:
+                for (MainOption option : MainOption.values()) {
+                    System.out.println(option.value() + ". " + option.name());
+                }
+                numOptions = MainOption.values().length;
                 break;
-            case "play":
-                System.out.println("1. User vs User");
-                System.out.println("2. User vs CPU");
-                System.out.println("3. Back");
-                numOptions = 3;
+            case PLAY:
+                for (PlayOption option : PlayOption.values()) {
+                    System.out.println(option.value() + ". " + option.name());
+                }
+                numOptions = MainOption.values().length;
                 break;
-            case "cpu":
+            case CPU:
                 System.out.println("Select CPU difficulty");
-                System.out.println("1. Random");
-                System.out.println("2. Proximity");
-                System.out.println("3. Back");
-                numOptions = 3;
+                for (CpuOption option : CpuOption.values()) {
+                    System.out.println(option.value() + ". " + option.name());
+                }
+                numOptions = MainOption.values().length;
                 break;
-            case "player":
+            case PLAYER:
                 System.out.println("Do you want to be player 1 or player 2?\n");
-                System.out.println("1. Player 1");
-                System.out.println("2. Player 2");
-                System.out.println("3. Back");
-                numOptions = 3;
+                for (PlayerOption option : PlayerOption.values()) {
+                    System.out.println(option.value() + ". " + option.name());
+                }
+                numOptions = MainOption.values().length;
                 break;
             default:
         }
@@ -71,37 +72,38 @@ public class Menu {
 
     public ArrayList<Type<?>> open() {
         ArrayList<Type<?>> gameRules = null;
-        int state = 0;
+        MainOption state = MainOption.MAIN;
         boolean exit = false;
 
         while (!exit) {
             switch (state) {
-                case 0:
-                    state = menuOptions("main");
+                case MAIN:
+                    int option = menuOptions(MenuType.MAIN);
+                    state = MainOption.fromInt(option);
                     break;
-                case 1:
+                case PLAY:
                     gameRules = new ArrayList<>();
 
                     if (play(gameRules)) {
                         return gameRules;
                     }
 
-                    state = 0;
+                    state = MainOption.MAIN;
                     break;
-                case 2:
+                case SIMULATE:
                     gameRules = new ArrayList<>();
 
                     if (simulate(gameRules)) {
                         return gameRules;
                     }
 
-                    state = 0;
+                    state = MainOption.MAIN;
                     break;
-                case 3:
+                case TRAIN:
                     System.out.println("\nTO BE IMPLEMENTED");
-                    state = 0;
+                    state = MainOption.MAIN;
                     break;
-                case 4:
+                case EXIT:
                     exit = true;
                 default:
                     System.out.println("\nInvalid input! Try again.\n");
@@ -112,9 +114,9 @@ public class Menu {
     }
 
     private boolean play(ArrayList<Type<?>> gameRules) {
-        int option = menuOptions("play");
+        int option = menuOptions(MenuType.PLAY);
 
-        if (option < 3) {
+        if (option == 1 || option == 2) {
                 gameRules.add(new Type<Player>(new User()));
             if (option == 1) {
                 gameRules.add(new Type<Player>(new User()));
@@ -138,7 +140,7 @@ public class Menu {
     }
 
     private boolean cpuDifficulty(ArrayList<Type<?>> gameRules) {
-        int option = menuOptions("cpu");
+        int option = menuOptions(MenuType.CPU);
 
         switch (option) {
             case 1:
@@ -153,7 +155,7 @@ public class Menu {
     }
 
     private boolean playerTurn(ArrayList<Type<?>> gameRules) {
-        int option = menuOptions("player");
+        int option = menuOptions(MenuType.PLAYER);
 
         switch (option) {
             case 1:
