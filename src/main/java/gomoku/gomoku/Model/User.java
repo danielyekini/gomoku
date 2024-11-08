@@ -2,12 +2,12 @@ package gomoku.gomoku.Model;
 
 import gomoku.gomoku.util.Input;
 
-public class User {
+public class User extends Player {
 
     Input in;
 
     public User() {
-        in = new Input();
+        this.in = new Input();
     }
     
     public String play() {
