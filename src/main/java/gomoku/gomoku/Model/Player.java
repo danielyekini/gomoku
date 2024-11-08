@@ -1,5 +1,9 @@
 package gomoku.gomoku.Model;
 
-public class Player {
+public abstract class Player {
+
+    public int number;
+    
+    public abstract String play(Board state);
     
 }

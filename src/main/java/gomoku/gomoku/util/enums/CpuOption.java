@@ -12,4 +12,14 @@ public enum CpuOption {
     public int value() {
         return value;
     }
+
+    public static CpuOption fromInt(int value) {
+        for (CpuOption o : CpuOption.values()) {
+            if (o.value == value) {
+                return o;
+            }
+        }
+
+        return null;
+    }
 }

@@ -12,4 +12,14 @@ public enum PlayOption {
     public int value() {
         return value;
     }
+
+    public static PlayOption fromInt(int value) {
+        for (PlayOption o : PlayOption.values()) {
+            if (o.value == value) {
+                return o;
+            }
+        }
+
+        return null;
+    }
 }

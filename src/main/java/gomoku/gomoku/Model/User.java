@@ -9,6 +9,11 @@ public class User extends Player {
     public User() {
         this.in = new Input();
     }
+
+    @Override
+    public String play(Board state) {
+        return play();
+    }
     
     public String play() {
         String userInput = in.String("Place your piece: ");
