@@ -37,9 +37,9 @@ public class Menu {
                     // System.out.println("\nTO BE IMPLEMENTED");
                     gameConfig = configureSimulate();
 
-                    // if (gameConfig != null) {
-                    //     return gameConfig;
-                    // }
+                    if (gameConfig != null) {
+                        return gameConfig;
+                    }
 
                     state = MainOption.MAIN;
                     break;
