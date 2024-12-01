@@ -21,12 +21,19 @@ public class User extends Player {
             System.out.println("\nInvalid Input!");
             userInput = in.String("Input a letter from A - O followed by a number from 1 - 15 (e.g. F8): ");
         }
-
         
+        if (userInput.equals("main")) {
+            return null;
+        }
+
         return userInput;
     }
 
     public boolean isValid(String input) {
+        if (input.equals("main")) {
+            return true;
+        }
+
         if (input.length() == 2 || input.length() == 3) {
             if (Character.isLetter(input.charAt(0))) {
                 if(Character.isDigit(input.charAt(1))) {
