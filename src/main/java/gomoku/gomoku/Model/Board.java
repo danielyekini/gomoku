@@ -2,6 +2,9 @@ package gomoku.gomoku.Model;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
+
+import gomoku.gomoku.util.enums.WinType;
 
 import java.util.ArrayList;
 
@@ -104,10 +107,12 @@ public class Board {
             return false;
         }
 
+        // Check valid position input
         if (position.length() < 2 || position.length() > 3) {
             return false;
         }
 
+        // Convert position to axis
         int[] axis = toAxis(position);
         int posX = axis[0];
         int posY = axis[1];
@@ -130,59 +135,68 @@ public class Board {
         return false;
     }
 
-    private boolean checkHorizontal(int lastPlayer) {
+    private WinType checkHorizontal(int lastPlayer) {
+        // Calculate search area
         int start = (lastPos[0]-4 < 0) ? 0 : lastPos[0]-4;
         int end = (lastPos[0]+4 > 14) ? 14 : lastPos[0]+4;
+
+        // Initialize count of consecutive pieces
         int count = 0;
 
+        // Search through search area for horizontally consecutive pieces
         for (int i = start; i <= end; i++) {
             if (grid[lastPos[1]][i] == lastPlayer) {
                 count++;
                 if (count == 5) {
-                    System.out.println("\nHorizontal Win by player " + lastPlayer + "\n");
-                    return true;
+                    return WinType.HORIZONTAL;
                 }
             } else {
                 count = 0;
             }
         }
 
-        return false;
+        return WinType.NOWIN;
     }
 
-    private boolean checkVertical(int lastPlayer) {
+    private WinType checkVertical(int lastPlayer) {
+        // Calculate search area
         int start = (lastPos[1]-4 < 0) ? 0 : lastPos[1]-4;
         int end = (lastPos[1]+4 > 14) ? 14 : lastPos[1]+4;
+
+        // Initialize count of consecutive pieces
         int count = 0;
 
+        // Search through search area for vertically consecutive pieces
         for (int i = start; i <= end; i++) {
             if (grid[i][lastPos[0]] == lastPlayer) {
                 count++;
                 if (count == 5) {
-                    System.out.println("\nVertical Win by player " + lastPlayer + "\n");
-                    return true;
+                    return WinType.VERTICAL;
                 }
             } else {
                 count = 0;
             }
         }
 
-        return false;
+        return WinType.NOWIN;
     }
 
-    private boolean checkDiagonal1(int lastPlayer) {
+    private WinType checkDiagonalLeftToRight(int lastPlayer) {
+        // Calculate search area
         int startX = (lastPos[0]-4 < 0) ? 0 : lastPos[0]-4;
-        int endX = (lastPos[0]+4 > 14) ? 14 : lastPos[0]+4;
         int startY = (lastPos[1]-4 < 0) ? 0 : lastPos[1]-4;
+        int endX = (lastPos[0]+4 > 14) ? 14 : lastPos[0]+4;
         int endY = (lastPos[1]+4 > 14) ? 14 : lastPos[1]+4;
+
+        // Initialize count of consecutive pieces
         int count = 0;
 
+        // Search through search area for top-left to bottom-right consecutive pieces
         while (startX <= endX && startY <= endY) {
             if (grid[startY][startX] == lastPlayer) {
                 count++;
                 if (count == 5) {
-                    System.out.println("\nDiagonal Win: Left to right by player " + lastPlayer + "\n");
-                    return true;
+                    return WinType.DIAGONALLEFTTORIGHT;
                 }
             } else {
                 count = 0;
@@ -191,22 +205,25 @@ public class Board {
             startY++;
         }
 
-        return false;
+        return WinType.NOWIN;
     }
 
-    private boolean checkDiagonal2(int lastPlayer) {
+    private WinType checkDiagonalRightToLeft(int lastPlayer) {
+        // Calculate search area
         int startX = (lastPos[0]+4 > 14) ? 14 : lastPos[0]+4;
-        int endX = (lastPos[0]-4 < 0) ? 0 : lastPos[0]-4;
         int startY = (lastPos[1]-4 < 0) ? 0 : lastPos[1]-4;
+        int endX = (lastPos[0]-4 < 0) ? 0 : lastPos[0]-4;
         int endY = (lastPos[1]+4 > 14) ? 14 : lastPos[1]+4;
+
+        // Initialize count of consecutive pieces
         int count = 0;
 
+        // Search through search area for top-right to bottom-left consecutive pieces
         while (startX >= endX && startY <= endY) {
             if (grid[startY][startX] == lastPlayer) {
                 count++;
                 if (count == 5) {
-                    System.out.println("\nDiagonal Win: Right to left by player " + lastPlayer + "\n");
-                    return true;
+                    return WinType.DIAGONAlRIGHTTOLEFT;
                 }
             } else {
                 count = 0;
@@ -215,25 +232,43 @@ public class Board {
             startY++;
         }
 
-        return false;
+        return WinType.NOWIN;
     }
 
-    public int checkWin() {
+    public WinType checkWin() {
         // int[][] searchRadius = getSearchRadius();
         int lastPlayer = grid[lastPos[1]][lastPos[0]];
 
         if (lastPlayer == 0) {
-            return -1;
+            return WinType.NOWIN;
         }
 
-        if (checkHorizontal(lastPlayer) || checkVertical(lastPlayer) || checkDiagonal1(lastPlayer) || checkDiagonal2(lastPlayer)) {
-            return 1;
+        WinType hasWon = null;
+        
+        List<Callable<WinType>> winChecks = new ArrayList<>();
+
+        winChecks.add(() -> checkHorizontal(lastPlayer));
+        winChecks.add(() -> checkVertical(lastPlayer));
+        winChecks.add(() -> checkDiagonalLeftToRight(lastPlayer));
+        winChecks.add(() -> checkDiagonalRightToLeft(lastPlayer));
+
+        for (Callable<WinType> check : winChecks) {
+            try {
+                hasWon = check.call();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            if (hasWon != WinType.NOWIN) {
+                return hasWon;
+            }
         }
 
         if (availableMoves.size() == 0) {
-            return 0;
+            return WinType.DRAW;
         }
 
-        return -1;
+        return WinType.NOWIN;
     }
 }
