@@ -13,6 +13,51 @@ public class Menu {
         this.in = in;
     }
 
+    public GameConfig getConfig() {
+        GameConfig gameConfig = null;
+        MainOption state = MainOption.MAIN;
+        boolean exit = false;
+
+        while (!exit) {
+            switch (state) {
+                case MAIN:
+                    int option = menuOptions(MenuType.MAIN);
+                    state = MainOption.fromInt(option);
+                    break;
+                case PLAY:
+                    gameConfig = configurePlay();
+
+                    if (gameConfig != null) {
+                        return gameConfig;
+                    }
+
+                    state = MainOption.MAIN;
+                    break;
+                case SIMULATE:
+                    // System.out.println("\nTO BE IMPLEMENTED");
+                    gameConfig = configureSimulate();
+
+                    if (gameConfig != null) {
+                        return gameConfig;
+                    }
+
+                    state = MainOption.MAIN;
+                    break;
+                case TRAIN:
+                    System.out.println("\nTO BE IMPLEMENTED");
+                    state = MainOption.MAIN;
+                    break;
+                case EXIT:
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("\nInvalid input! Try again.\n");
+            }
+        }
+
+        return gameConfig;
+    }
+
     private int menuOptions(MenuType menuType) {
         int numOptions = 0;
         System.out.println("\n");
@@ -69,51 +114,6 @@ public class Menu {
 
         // Return chosen option
         return option;
-    }
-
-    public GameConfig getConfig() {
-        GameConfig gameConfig = null;
-        MainOption state = MainOption.MAIN;
-        boolean exit = false;
-
-        while (!exit) {
-            switch (state) {
-                case MAIN:
-                    int option = menuOptions(MenuType.MAIN);
-                    state = MainOption.fromInt(option);
-                    break;
-                case PLAY:
-                    gameConfig = configurePlay();
-
-                    if (gameConfig != null) {
-                        return gameConfig;
-                    }
-
-                    state = MainOption.MAIN;
-                    break;
-                case SIMULATE:
-                    System.out.println("\nTO BE IMPLEMENTED");
-                    // gameConfig = configureSimulate();
-
-                    // if (gameConfig != null) {
-                    //     return gameConfig;
-                    // }
-
-                    state = MainOption.MAIN;
-                    break;
-                case TRAIN:
-                    System.out.println("\nTO BE IMPLEMENTED");
-                    state = MainOption.MAIN;
-                    break;
-                case EXIT:
-                    exit = true;
-                    break;
-                default:
-                    System.out.println("\nInvalid input! Try again.\n");
-            }
-        }
-
-        return gameConfig;
     }
 
     private GameConfig configurePlay() {

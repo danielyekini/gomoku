@@ -1,4 +1,5 @@
-1. refactor winning functionality to display message in the gamecontrol
-2. let the user know they can type 'main' during a game to return to the main menu
-3. fix bugs (sonarqube)
-4. design and implement api endpoints
+1. update taketurn() to return new enum PlayState: NEXTTURN NEWGAME MENU
+2. let the user know their option during gameplay (e.g. they can type 'main' during a game to return to the main menu)
+3. edit endgame functionality to utilise mini menu - "Play Again? > Yes [Y] No [N]"
+4. fix bugs (sonarqube)
+5. design and implement api endpoints
