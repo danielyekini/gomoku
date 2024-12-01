@@ -1,30 +1,43 @@
 package gomoku.gomoku.Controller;
-
 import gomoku.gomoku.Model.*;
-import gomoku.gomoku.Model.CPUPlayers.*;
 import gomoku.gomoku.util.Menu;
 import gomoku.gomoku.util.configure.*;
-
-import java.util.List;
+import gomoku.gomoku.util.enums.ProgramState;
+import gomoku.gomoku.util.enums.WinType;
 
 public class GameControl {
     Menu menu;
-    Board board;
-    Player p1;
-    Player p2;
 
-    public GameControl() {
-        this.menu = new Menu();
+    public GameControl(Menu menu) {
+        this.menu = menu;
     }
 
     public void start() {
-        GameConfig config = menu.getConfig();
-        configureGame(config);
+        ProgramState state = ProgramState.MENU;
+        while (state != ProgramState.TERMINATE) {
+            switch (state) {
+                case MENU:
+                    
+                    GameConfig config = menu.getConfig();
+                    state = configureGame(config);
+                    break;
+            
+                default:
+                    break;
+            }
+        }
     }
 
-    private void configureGame(GameConfig config) {
+    private ProgramState configureGame(GameConfig config) {
+
+        if (config == null) {
+            return ProgramState.TERMINATE;
+        }
+        
         if (config instanceof PlayConfig) {
-            executePlay((PlayConfig) config);
+            if (executePlay((PlayConfig) config) == null) {
+                return ProgramState.MENU;
+            };
         } else if (config instanceof SimulateConfig) {
             executeSimulate((SimulateConfig) config);
         } else if (config instanceof TrainConfig) {
@@ -32,23 +45,56 @@ public class GameControl {
         } else {
             throw new IllegalArgumentException("Unknown GameConfig type");
         }
+
+        return ProgramState.TERMINATE;
     }
 
-    private void executePlay(PlayConfig config) {
+    private ProgramState executePlay(GameConfig config) {
         // Initalise new board object
-        board = new Board();
+        Board board = config.getBoard();
+        board.printBoard();
 
         // Assign players
-        p1 = config.getPlayer1();
-        p2 = config.getPlayer2();;
+        Player p1 = config.getPlayer1();
+        Player p2 = config.getPlayer2();
+        Player lastPlayer = null;
 
         // Run game
-        while (board.checkWin() == -1) {
-            board.printBoard();
-            board.placePosition(p1.number, p1.play(board));
-            board.printBoard();
-            board.placePosition(p2.number, p2.play(board));
+        WinType winType = WinType.NOWIN;
+
+        while (winType == WinType.NOWIN) {
+            if (takeTurn(p1, board) == null) {
+                lastPlayer = p1;
+                winType = board.checkWin();
+
+                if (winType == WinType.NOWIN) {
+                    if (takeTurn(p2, board) != null) {
+                        return ProgramState.MENU;
+                    }
+                    lastPlayer = p2;
+                } else {
+                    break;
+                }
+            } else {
+                return ProgramState.MENU;
+            }
         }
+
+        if (config instanceof PlayConfig) {
+            if (winType == WinType.HORIZONTAL) {
+                System.out.println("\nHorizontal Win by player " + lastPlayer.number + "\n");
+            } else if (winType == WinType.VERTICAL) {
+                System.out.println("\nVertical Win by player " + lastPlayer.number + "\n");
+            } else if (winType == WinType.DIAGONALLEFTTORIGHT) {
+                System.out.println("\nDiagonal Win: Left to right by player " + lastPlayer.number + "\n");
+            } else if (winType == WinType.DIAGONAlRIGHTTOLEFT) {
+                System.out.println("\nDiagonal Win: Right to left by player " + lastPlayer.number + "\n");
+            } else if (winType == WinType.DRAW) {
+                System.out.println("\nThis game is a draw!" + "\n");
+            }
+        }
+
+        return null;
     }
 
     private void executeSimulate(SimulateConfig config) {
@@ -59,5 +105,16 @@ public class GameControl {
     private void executeTrain(TrainConfig config) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'executeTrain'");
+    }
+
+    private ProgramState takeTurn(Player player, Board board) {
+        String pos = player.play(board);
+        if (pos != null) {
+            board.placePosition(player.number, pos);
+            board.printBoard();
+            return null;
+        }
+
+        return ProgramState.MENU;
     }
 }

@@ -9,8 +9,8 @@ import gomoku.gomoku.util.enums.*;
 public class Menu {
     Input in;
     
-    public Menu() {
-        this.in = new Input();
+    public Menu(Input in) {
+        this.in = in;
     }
 
     private int menuOptions(MenuType menuType) {
@@ -34,7 +34,7 @@ public class Menu {
                 for (PlayOption option : PlayOption.values()) {
                     System.out.println(option.value() + ". " + option.name());
                 }
-                numOptions = MainOption.values().length;
+                numOptions = PlayOption.values().length;
                 break;
                 
             case CPU:
@@ -43,7 +43,7 @@ public class Menu {
                 for (CpuOption option : CpuOption.values()) {
                     System.out.println(option.value() + ". " + option.name());
                 }
-                numOptions = MainOption.values().length;
+                numOptions = CpuOption.values().length;
                 break;
 
             case PLAYER:
@@ -52,7 +52,7 @@ public class Menu {
                 for (PlayerOption option : PlayerOption.values()) {
                     System.out.println(option.value() + ". " + option.name());
                 }
-                numOptions = MainOption.values().length;
+                numOptions = PlayerOption.values().length;
                 break;
 
             default:
@@ -92,11 +92,12 @@ public class Menu {
                     state = MainOption.MAIN;
                     break;
                 case SIMULATE:
-                    gameConfig = configureSimulate();
+                    System.out.println("\nTO BE IMPLEMENTED");
+                    // gameConfig = configureSimulate();
 
-                    if (gameConfig != null) {
-                        return gameConfig;
-                    }
+                    // if (gameConfig != null) {
+                    //     return gameConfig;
+                    // }
 
                     state = MainOption.MAIN;
                     break;
@@ -106,6 +107,7 @@ public class Menu {
                     break;
                 case EXIT:
                     exit = true;
+                    break;
                 default:
                     System.out.println("\nInvalid input! Try again.\n");
             }
@@ -122,9 +124,15 @@ public class Menu {
         switch (option) {
             case USER_VS_USER:
                 player2 = new User();
+                player1.number = 1;
+                player2.number = 2;
                 break;
             case USER_VS_CPU: 
                 player2 = selectCPUPlayer();
+
+                if (player2 == null) {
+                    return null;
+                }
                 
                 switch (playerTurn()) {
                     case 1:

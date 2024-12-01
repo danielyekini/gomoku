@@ -21,12 +21,28 @@ public class Input {
     }
 
     public int Integer(String input_string){
-        System.out.print(input_string);
-        return scan.nextInt();
+        while (true) {
+            System.out.print(input_string);
+            String input = scan.nextLine();
+    
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("\nInvalid input! Try again");
+            }
+        }
     }
 
     public double Double(String input_string){
         System.out.print(input_string);
-        return scan.nextDouble();
+
+        Double input = scan.nextDouble();
+        while (!(input instanceof Double)) {
+            System.out.println("\nInvalid input! Try again");
+            System.out.print("\n"+input_string);
+            input = scan.nextDouble();
+        }
+
+        return input;
     }
 }

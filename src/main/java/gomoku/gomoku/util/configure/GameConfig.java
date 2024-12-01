@@ -1,8 +1,11 @@
 package gomoku.gomoku.util.configure;
 
+import gomoku.gomoku.Model.Board;
 import gomoku.gomoku.Model.Player;
 
 public interface GameConfig {
+
+    public Board getBoard();
     
     public Player getPlayer1();
 

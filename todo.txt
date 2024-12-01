@@ -1,0 +1,4 @@
+1. refactor winning functionality to display message in the gamecontrol
+2. let the user know they can type 'main' during a game to return to the main menu
+3. fix bugs (sonarqube)
+4. design and implement api endpoints

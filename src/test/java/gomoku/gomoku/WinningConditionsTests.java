@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import gomoku.gomoku.Model.Board;
+import gomoku.gomoku.util.enums.WinType;
 
 @SpringBootTest
 public class WinningConditionsTests {
@@ -39,7 +40,7 @@ public class WinningConditionsTests {
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
-        assertTrue(board.checkWin() == 1);
+        assertTrue(board.checkWin() == WinType.HORIZONTAL);
     }
 
     @Test
@@ -56,11 +57,11 @@ public class WinningConditionsTests {
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
-        assertTrue(board.checkWin() == 1);
+        assertTrue(board.checkWin()  == WinType.VERTICAL);
     }
 
     @Test
-    public void testDiagonalWin1() {
+    public void testDiagonalWinLeftToRight() {
         // Player 1 places 5 pieces diagonally (top-left to bottom-right)
         String[] movesPlayer1 = {"A15", "B14", "C13", "D12", "E11"};
         String[] movesPlayer2 = {"A1", "B1", "C1", "D1"};
@@ -73,11 +74,11 @@ public class WinningConditionsTests {
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
-        assertTrue(board.checkWin() == 1);
+        assertTrue(board.checkWin()  == WinType.DIAGONALLEFTTORIGHT);
     }
 
     @Test
-    public void testDiagonalWin2() {
+    public void testDiagonalWinRighttoLeft() {
         // Player 2 places 5 pieces diagonally (bottom-left to top-right)
         String[] movesPlayer1 = {"E11", "D12", "C13", "B14", "A15"};
         String[] movesPlayer2 = {"A1", "B1", "C1", "D1"};
@@ -90,7 +91,7 @@ public class WinningConditionsTests {
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
-        assertTrue(board.checkWin() == 1);
+        assertTrue(board.checkWin()  == WinType.DIAGONAlRIGHTTOLEFT);
     }
 
     @Test
@@ -107,7 +108,7 @@ public class WinningConditionsTests {
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that no win is detected
-        assertFalse(board.checkWin() == 1);
+        assertTrue(board.checkWin()  == WinType.NOWIN);
     }
 
     // --- Edge Case Tests ---
@@ -126,7 +127,7 @@ public class WinningConditionsTests {
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
-        assertTrue(board.checkWin() == 1);
+        assertTrue(board.checkWin()  == WinType.HORIZONTAL);
     }
 
     @Test
@@ -143,7 +144,7 @@ public class WinningConditionsTests {
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
     
         // Assert that the board detects a win
-        assertTrue(board.checkWin() == 1);
+        assertTrue(board.checkWin()  == WinType.VERTICAL);
     }
 
     @Test
@@ -159,7 +160,7 @@ public class WinningConditionsTests {
 
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
         // Assert that the board detects a win
-        assertTrue(board.checkWin() == 1);
+        assertTrue(board.checkWin()  == WinType.DIAGONALLEFTTORIGHT);
     }
 
     @Test
@@ -175,7 +176,7 @@ public class WinningConditionsTests {
 
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
         // Assert that the board detects a win
-        assertTrue(board.checkWin() == 1);
+        assertTrue(board.checkWin()  == WinType.DIAGONALLEFTTORIGHT);
     }
 
     @Test
@@ -191,7 +192,7 @@ public class WinningConditionsTests {
 
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
         // Assert that the board detects a win
-        assertTrue(board.checkWin() == 1);
+        assertTrue(board.checkWin()  == WinType.HORIZONTAL);
     }
 
     @Test
@@ -207,7 +208,7 @@ public class WinningConditionsTests {
 
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
         // Assert that the board detects a win
-        assertTrue(board.checkWin() == 1);
+        assertTrue(board.checkWin()  == WinType.VERTICAL);
     }
 
     @Test
@@ -223,7 +224,7 @@ public class WinningConditionsTests {
 
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
         // Assert that no win is detected
-        assertFalse(board.checkWin() == 1);
+        assertTrue(board.checkWin()  == WinType.NOWIN);
     }
 
     // --- Simulating a Real Game ---
@@ -240,7 +241,7 @@ public class WinningConditionsTests {
 
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
 
-        assertTrue(board.checkWin() == 1);
+        assertTrue(board.checkWin()  == WinType.HORIZONTAL);
     }
 
     @Test
@@ -255,7 +256,7 @@ public class WinningConditionsTests {
 
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
 
-        assertTrue(board.checkWin() == 1);
+        assertTrue(board.checkWin()  == WinType.VERTICAL);
     }
 
     @Test
@@ -268,7 +269,7 @@ public class WinningConditionsTests {
             board.placePosition(2, movesPlayer2[i]);
         }
 
-        assertFalse(board.checkWin() == 1);
+        assertTrue(board.checkWin()  == WinType.NOWIN);
     }
 }
 
