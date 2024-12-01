@@ -223,7 +223,7 @@ public class Board {
             if (grid[startY][startX] == lastPlayer) {
                 count++;
                 if (count == 5) {
-                    return WinType.DIAGONAlRIGHTTOLEFT;
+                    return WinType.DIAGONALRIGHTTOLEFT;
                 }
             } else {
                 count = 0;

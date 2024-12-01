@@ -87,7 +87,7 @@ public class GameControl {
                 System.out.println("\nVertical Win by player " + lastPlayer.number + "\n");
             } else if (winType == WinType.DIAGONALLEFTTORIGHT) {
                 System.out.println("\nDiagonal Win: Left to right by player " + lastPlayer.number + "\n");
-            } else if (winType == WinType.DIAGONAlRIGHTTOLEFT) {
+            } else if (winType == WinType.DIAGONALRIGHTTOLEFT) {
                 System.out.println("\nDiagonal Win: Right to left by player " + lastPlayer.number + "\n");
             } else if (winType == WinType.DRAW) {
                 System.out.println("\nThis game is a draw!" + "\n");

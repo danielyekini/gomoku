@@ -78,9 +78,9 @@ public class WinningConditionsTests {
     }
 
     @Test
-    public void testDiagonalWinRighttoLeft() {
+    public void testDiagonalWinRightToLeft() {
         // Player 2 places 5 pieces diagonally (bottom-left to top-right)
-        String[] movesPlayer1 = {"E11", "D12", "C13", "B14", "A15"};
+        String[] movesPlayer1 = {"K13", "J12", "I11", "H10", "G9"};
         String[] movesPlayer2 = {"A1", "B1", "C1", "D1"};
 
         for (int i = 0; i < movesPlayer2.length; i++) {
@@ -89,9 +89,11 @@ public class WinningConditionsTests {
         }
 
         board.placePosition(1, movesPlayer1[movesPlayer1.length - 1]);
+
+        System.out.println("\nWinType: " + board.checkWin() + "\n");
     
         // Assert that the board detects a win
-        assertTrue(board.checkWin()  == WinType.DIAGONAlRIGHTTOLEFT);
+        assertTrue(board.checkWin()  == WinType.DIAGONALRIGHTTOLEFT);
     }
 
     @Test
