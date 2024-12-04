@@ -2,6 +2,7 @@ package gomoku.gomoku.Controller;
 import gomoku.gomoku.Model.*;
 import gomoku.gomoku.util.Menu;
 import gomoku.gomoku.util.configure.*;
+import gomoku.gomoku.util.enums.PlayState;
 import gomoku.gomoku.util.enums.ProgramState;
 import gomoku.gomoku.util.enums.WinType;
 
@@ -60,36 +61,39 @@ public class GameControl {
         Player lastPlayer = null;
 
         // Run game
-        WinType winType = WinType.NOWIN;
+        WinType win = WinType.NOWIN;
 
-        while (winType == WinType.NOWIN) {
-            if (takeTurn(p1, board) == null) {
-                lastPlayer = p1;
-                winType = board.checkWin();
-
-                if (winType == WinType.NOWIN) {
-                    if (takeTurn(p2, board) != null) {
-                        return ProgramState.MENU;
-                    }
-                    lastPlayer = p2;
-                } else {
-                    break;
-                }
-            } else {
+        while (win == WinType.NOWIN) {
+            if (takeTurn(p1, board) == PlayState.MENU) {
                 return ProgramState.MENU;
+            }
+
+            lastPlayer = p1;
+            win = board.checkWin();
+
+            if (win == WinType.NOWIN) {
+
+                if (takeTurn(p2, board) == PlayState.MENU) {
+                    return ProgramState.MENU;
+                }
+
+                lastPlayer = p2;
+                win = board.checkWin();
+            } else {
+                break;
             }
         }
 
         if (config instanceof PlayConfig) {
-            if (winType == WinType.HORIZONTAL) {
+            if (win == WinType.HORIZONTAL) {
                 System.out.println("\nHorizontal Win by player " + lastPlayer.number + "\n");
-            } else if (winType == WinType.VERTICAL) {
+            } else if (win == WinType.VERTICAL) {
                 System.out.println("\nVertical Win by player " + lastPlayer.number + "\n");
-            } else if (winType == WinType.DIAGONALLEFTTORIGHT) {
+            } else if (win == WinType.DIAGONALLEFTTORIGHT) {
                 System.out.println("\nDiagonal Win: Left to right by player " + lastPlayer.number + "\n");
-            } else if (winType == WinType.DIAGONALRIGHTTOLEFT) {
+            } else if (win == WinType.DIAGONALRIGHTTOLEFT) {
                 System.out.println("\nDiagonal Win: Right to left by player " + lastPlayer.number + "\n");
-            } else if (winType == WinType.DRAW) {
+            } else if (win == WinType.DRAW) {
                 System.out.println("\nThis game is a draw!" + "\n");
             }
         }
@@ -107,14 +111,14 @@ public class GameControl {
         throw new UnsupportedOperationException("Unimplemented method 'executeTrain'");
     }
 
-    private ProgramState takeTurn(Player player, Board board) {
+    private PlayState takeTurn(Player player, Board board) {
         String pos = player.play(board);
         if (pos != null) {
             board.placePosition(player.number, pos);
             board.printBoard();
-            return null;
+            return PlayState.NEXTTURN;
         }
 
-        return ProgramState.MENU;
+        return PlayState.MENU;
     }
 }
