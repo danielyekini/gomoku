@@ -1,12 +1,11 @@
 package gomoku.gomoku.Model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 import gomoku.gomoku.util.enums.WinType;
-
-import java.util.ArrayList;
 
 public class Board {
 
@@ -26,6 +25,8 @@ public class Board {
         int row = 15;
         String gap = "";
 
+        
+        System.out.println("\n");
         for (int i = 0; i < grid.length; i++) {
             if (row < 10) {
                 gap = " ";

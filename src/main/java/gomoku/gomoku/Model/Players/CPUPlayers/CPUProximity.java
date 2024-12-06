@@ -1,11 +1,13 @@
-package gomoku.gomoku.Model.CPUPlayers;
+package gomoku.gomoku.Model.Players.CPUPlayers;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import gomoku.gomoku.Model.Board;
 import gomoku.gomoku.Services.IProximityService;
+import gomoku.gomoku.util.PlayerResponse;
+import gomoku.gomoku.util.enums.PlayState;
 
 public class CPUProximity extends CPUPlayer {
 
@@ -21,7 +23,7 @@ public class CPUProximity extends CPUPlayer {
     }
 
     @Override
-    public String play(Board board) {
+    public PlayerResponse play(Board board) {
         Random random = new Random();
         List<String> availableMoves;
         
@@ -45,7 +47,7 @@ public class CPUProximity extends CPUPlayer {
         String move = availableMoves.get(random.nextInt(availableMoves.size()));
         lastMove = move;
 
-        return move;
+        return new PlayerResponse(PlayState.TRYNEXTTURN, move);
     }
 
     private List<String> getStartArea() {

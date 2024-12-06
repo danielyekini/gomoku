@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import gomoku.gomoku.Model.*;
-import gomoku.gomoku.Model.CPUPlayers.*;
+import gomoku.gomoku.Model.Players.User;
+import gomoku.gomoku.Model.Players.CPUPlayers.*;
 import gomoku.gomoku.util.Input;
 import gomoku.gomoku.util.Menu;
 import gomoku.gomoku.util.configure.*;

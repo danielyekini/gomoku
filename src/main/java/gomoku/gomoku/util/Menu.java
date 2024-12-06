@@ -1,10 +1,18 @@
 package gomoku.gomoku.util;
 
-import gomoku.gomoku.Model.*;
-import gomoku.gomoku.Model.CPUPlayers.*;
+import gomoku.gomoku.Model.Players.CPUPlayers.CPUProximity;
+import gomoku.gomoku.Model.Players.CPUPlayers.CPURandom;
+import gomoku.gomoku.Model.Players.Player;
+import gomoku.gomoku.Model.Players.User;
 import gomoku.gomoku.Services.ProximityService;
-import gomoku.gomoku.util.configure.*;
-import gomoku.gomoku.util.enums.*;
+import gomoku.gomoku.util.configure.GameConfig;
+import gomoku.gomoku.util.configure.PlayConfig;
+import gomoku.gomoku.util.configure.SimulateConfig;
+import gomoku.gomoku.util.enums.CpuOption;
+import gomoku.gomoku.util.enums.MainOption;
+import gomoku.gomoku.util.enums.MenuType;
+import gomoku.gomoku.util.enums.PlayOption;
+import gomoku.gomoku.util.enums.PlayerOption;
 
 public class Menu {
     Input in;

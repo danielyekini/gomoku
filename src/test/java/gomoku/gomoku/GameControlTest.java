@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import gomoku.gomoku.Controller.GameControl;
 import gomoku.gomoku.Model.*;
+import gomoku.gomoku.Model.Players.Player;
 import gomoku.gomoku.util.Menu;
 import gomoku.gomoku.util.configure.*;
 
