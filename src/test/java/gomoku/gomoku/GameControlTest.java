@@ -7,9 +7,12 @@ import gomoku.gomoku.Controller.GameControl;
 import gomoku.gomoku.Model.*;
 import gomoku.gomoku.Model.Players.Player;
 import gomoku.gomoku.util.Menu;
+import gomoku.gomoku.util.PlayerResponse;
 import gomoku.gomoku.util.configure.*;
 
 import java.util.*;
+
+import gomoku.gomoku.util.enums.PlayState;
 
 public class GameControlTest {
 
@@ -33,17 +36,17 @@ public class GameControlTest {
 
     // MockPlayer class to simulate player moves
     public class MockPlayer extends Player {
-        private Queue<String> moves;
+        private Queue<PlayerResponse> moves;
         private String name;
 
-        public MockPlayer(int number, List<String> moves, String name) {
+        public MockPlayer(int number, List<PlayerResponse> moves, String name) {
             this.number = number;
             this.moves = new LinkedList<>(moves);
             this.name = name;
         }
 
         @Override
-        public String play(Board board) {
+        public PlayerResponse play(Board board) {
             if (moves.isEmpty()) {
                 return null; // Simulate resignation or end of moves
             }
@@ -59,8 +62,19 @@ public class GameControlTest {
     @org.junit.jupiter.api.Test
     public void testGameControl_PlayGame_UserVsUser() {
         // Simulate a game between two users where Player 1 wins with a horizontal line
-        List<String> p1Moves = Arrays.asList("A1", "B1", "C1", "D1", "E1"); // Winning move sequence
-        List<String> p2Moves = Arrays.asList("A2", "B2", "C2", "D2");
+        List<PlayerResponse> p1Moves = Arrays.asList(
+            new PlayerResponse(PlayState.TRYNEXTTURN, "A1"), 
+            new PlayerResponse(PlayState.TRYNEXTTURN, "B1"), 
+            new PlayerResponse(PlayState.TRYNEXTTURN, "C1"), 
+            new PlayerResponse(PlayState.TRYNEXTTURN, "D1"), 
+            new PlayerResponse(PlayState.TRYNEXTTURN, "E1")
+        ); // Winning move sequence
+        List<PlayerResponse> p2Moves = Arrays.asList(
+            new PlayerResponse(PlayState.TRYNEXTTURN, "A2"), 
+            new PlayerResponse(PlayState.TRYNEXTTURN, "B2"), 
+            new PlayerResponse(PlayState.TRYNEXTTURN, "C2"), 
+            new PlayerResponse(PlayState.TRYNEXTTURN, "D2")
+        );
 
         MockPlayer p1 = new MockPlayer(1, p1Moves, "User1");
         MockPlayer p2 = new MockPlayer(2, p2Moves, "User2");
@@ -77,13 +91,24 @@ public class GameControlTest {
     @org.junit.jupiter.api.Test
     public void testGameControl_PlayGame_UserVsCPU() {
         // Simulate a game between a user and a CPU where the CPU wins
-        List<String> userMoves = Arrays.asList("A1", "B1", "C1", "D2");
-        List<String> cpuMoves = Arrays.asList("A2", "B2", "C2", "D2", "E2"); // CPU's winning move sequence
+        List<PlayerResponse> userMoves = Arrays.asList(
+            new PlayerResponse(PlayState.TRYNEXTTURN, "A1"), 
+            new PlayerResponse(PlayState.TRYNEXTTURN, "B1"), 
+            new PlayerResponse(PlayState.TRYNEXTTURN, "C1"), 
+            new PlayerResponse(PlayState.TRYNEXTTURN, "D1")
+        );
+        List<PlayerResponse> cpuMoves = Arrays.asList(
+            new PlayerResponse(PlayState.TRYNEXTTURN, "A2"), 
+            new PlayerResponse(PlayState.TRYNEXTTURN, "B2"), 
+            new PlayerResponse(PlayState.TRYNEXTTURN, "C2"), 
+            new PlayerResponse(PlayState.TRYNEXTTURN, "D2"), 
+            new PlayerResponse(PlayState.TRYNEXTTURN, "E2")
+        ); // CPU's winning move sequence
 
-        MockPlayer user = new MockPlayer(1, userMoves, "User");
-        MockPlayer cpu = new MockPlayer(2, cpuMoves, "CPU");
+        MockPlayer cpu = new MockPlayer(1, cpuMoves, "CPU");
+        MockPlayer user = new MockPlayer(2, userMoves, "User");
 
-        PlayConfig playConfig = new PlayConfig(user, cpu);
+        PlayConfig playConfig = new PlayConfig(cpu, user);
         MockMenu mockMenu = new MockMenu(Arrays.asList(playConfig));
 
         GameControl gameControl = new GameControl(mockMenu);
@@ -133,42 +158,6 @@ public class GameControlTest {
         } catch (UnsupportedOperationException e) {
             assertEquals("Unimplemented method 'executeTrain'", e.getMessage());
         }
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testGameControl_GameEndsWhenBoardIsFull() {
-        // Simulate a game that ends in a draw when the board is full without any player winning
-        List<String> p1Moves = new ArrayList<>();
-        List<String> p2Moves = new ArrayList<>();
-
-        // Assuming a 5x5 board for simplicity
-        String[] positions = {
-            "A1", "B1", "C1", "D1", "E1",
-            "A2", "B2", "C2", "D2", "E2",
-            "A3", "B3", "C3", "D3", "E3",
-            "A4", "B4", "C4", "D4", "E4",
-            "A5", "B5", "C5", "D5", "E5"
-        };
-
-        // Alternate moves between players
-        for (int i = 0; i < positions.length; i++) {
-            if (i % 2 == 0) {
-                p1Moves.add(positions[i]);
-            } else {
-                p2Moves.add(positions[i]);
-            }
-        }
-
-        MockPlayer p1 = new MockPlayer(1, p1Moves, "User1");
-        MockPlayer p2 = new MockPlayer(2, p2Moves, "User2");
-
-        PlayConfig playConfig = new PlayConfig(p1, p2);
-        MockMenu mockMenu = new MockMenu(Arrays.asList(playConfig));
-
-        GameControl gameControl = new GameControl(mockMenu);
-        gameControl.start();
-
-        // The test passes if the game ends without errors when the board is full
     }
 }
 

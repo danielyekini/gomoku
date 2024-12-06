@@ -86,7 +86,7 @@ public class GameControl {
                     lastPlayer = p1;
                     win = board.checkWin();
                     
-                    if (win == WinType.NOWIN) { 
+                    if (win != WinType.NOWIN) { 
                         break;
                     }
                     
@@ -151,14 +151,17 @@ public class GameControl {
         PlayerResponse response = player.play(board);
 
         switch (response.type) {
-            case NEWGAME:
+            case NEWGAME -> {
                 return response.type;
-            case MENU:
+            }
+            case MENU -> {
                 return response.type;
-            default:
+            }
+            default -> {
                 board.placePosition(player.number, response.getPos());
                 board.printBoard();
                 return response.type;
+            }
         }
     }
 }

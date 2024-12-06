@@ -12,7 +12,7 @@ public class PlayerResponse {
     }
 
     public PlayerResponse(PlayState response, String move) {
-        this.type = type;
+        this.type = response;
         this.move = move;
     }
 
