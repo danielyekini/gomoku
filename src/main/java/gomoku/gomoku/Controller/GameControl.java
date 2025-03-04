@@ -57,6 +57,8 @@ public class GameControl {
             
                 case ENDGAME:
                     return ProgramState.ENDGAME;
+                default:
+                    break;
             }
             
         } else if (config instanceof SimulateConfig) {
@@ -70,7 +72,7 @@ public class GameControl {
         return ProgramState.TERMINATE;
     }
 
-    private PlayState executePlay(GameConfig config) {
+    private PlayState executePlay(PlayConfig config) {
         // Initalise new board object
         Board board = config.initializeBoard();
         board.printBoard();
@@ -128,27 +130,25 @@ public class GameControl {
                 }
             }
         }
-
-        if (config instanceof PlayConfig) {
-            switch (win) {
-                case HORIZONTAL:
-                    System.out.println("\nHorizontal Win by player " + lastPlayer.number + "\n");
-                    break;
-                case VERTICAL:
-                    System.out.println("\nVertical Win by player " + lastPlayer.number + "\n");
-                    break;
-                case DIAGONALLEFTTORIGHT:
-                    System.out.println("\nDiagonal Win: Left to right by player " + lastPlayer.number + "\n");
-                    break;
-                case DIAGONALRIGHTTOLEFT:
-                    System.out.println("\nDiagonal Win: Right to left by player " + lastPlayer.number + "\n");
-                    break;
-                case DRAW:
-                    System.out.println("\nThis game is a draw!" + "\n");
-                    break;
-                default:
-                    break;
-            }
+        
+        switch (win) {
+            case HORIZONTAL:
+                System.out.println("\nHorizontal Win by player " + lastPlayer.number + "\n");
+                break;
+            case VERTICAL:
+                System.out.println("\nVertical Win by player " + lastPlayer.number + "\n");
+                break;
+            case DIAGONALLEFTTORIGHT:
+                System.out.println("\nDiagonal Win: Left to right by player " + lastPlayer.number + "\n");
+                break;
+            case DIAGONALRIGHTTOLEFT:
+                System.out.println("\nDiagonal Win: Right to left by player " + lastPlayer.number + "\n");
+                break;
+            case DRAW:
+                System.out.println("\nThis game is a draw!" + "\n");
+                break;
+            default:
+                break;
         }
 
         
