@@ -5,9 +5,9 @@ import gomoku.gomoku.Model.Players.Player;
 
 public interface GameConfig {
 
-    public Board getBoard();
+    public Board initializeBoard();
     
-    public Player getPlayer1();
+    public Player initializePlayer1();
 
-    public Player getPlayer2();
+    public Player initializePlayer2();
 }

@@ -6,21 +6,21 @@ import gomoku.gomoku.Model.Players.Player;
 public class SimulateConfig implements GameConfig {
 
     @Override
-    public Player getPlayer1() {
+    public Player initializePlayer1() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getPlayer1'");
     }
 
     @Override
-    public Player getPlayer2() {
+    public Player initializePlayer2() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getPlayer2'");
     }
 
     @Override
-    public Board getBoard() {
+    public Board initializeBoard() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getBoard'");
+        throw new UnsupportedOperationException("Unimplemented method 'initializeBoard'");
     }
     
 }

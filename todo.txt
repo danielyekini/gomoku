@@ -1,5 +1,7 @@
-1. refactor executPlay within GameControl to effectivley integrate new enums usage (switch statement)
-2. exit game message
-3. edit endgame functionality to utilise mini menu - "Play Again? > Yes [Y] No [N]"
-4. fix bugs (sonarqube)
-5. design and implement api endpoints
+1. fix bugs (sonarqube)
+2. design and implement api endpoints
+3. Console UI tiddlybits
+4. 
+
+Console UI tiddlybits:
+    - Slow rolls

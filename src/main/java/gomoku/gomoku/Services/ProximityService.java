@@ -11,6 +11,7 @@ public class ProximityService implements IProximityService {
 
     @Override
     public List<String> getAvailableMoves(Board board, String[] areaPoints) {
+
         List<String> availableMoves = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
 
@@ -43,13 +44,16 @@ public class ProximityService implements IProximityService {
 
     @Override
     public String[] getProximityArea(Board board, String playerLastMove) {
+        // Initialise proximity area
         String[] proximityArea = new String[2];
 
+        // Find proximity area
         proximityArea[0] = playerLastMove;
         char letter = 'A';
         letter += board.getLastPos()[0];
         proximityArea[1] = "" + letter + (15 - board.getLastPos()[1]);
 
+        // Sort so top point comes first
         Arrays.sort(proximityArea, (a, b) -> a.charAt(0) == b.charAt(0) ? Integer.parseInt(b.substring(1)) - Integer.parseInt(a.substring(1)) : a.charAt(0) - b.charAt(0));
 
         return proximityArea;

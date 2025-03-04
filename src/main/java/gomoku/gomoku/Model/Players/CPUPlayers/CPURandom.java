@@ -9,12 +9,19 @@ import gomoku.gomoku.util.enums.PlayState;
 
 public class CPURandom extends CPUPlayer {
 
+    int firstTurn = 0;
+
     @Override
     public PlayerResponse play(Board board) {
         List<String> availableMoves = board.getAvailableMoves();
 
         Random random = new Random();
         String move = availableMoves.get(random.nextInt(availableMoves.size()));
+        
+        if (firstTurn == 0) {
+            firstTurn++;
+            return new PlayerResponse(PlayState.TRYNEXTTURN, "C15");
+        }
 
         return new PlayerResponse(PlayState.TRYNEXTTURN, move);
     }

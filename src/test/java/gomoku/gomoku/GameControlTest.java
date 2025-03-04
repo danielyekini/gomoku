@@ -34,6 +34,29 @@ public class GameControlTest {
         }
     }
 
+    // MockPlayConfig class to simulate initializing players
+    public class MockPlayConfig extends PlayConfig {
+        private Board board;
+        private MockPlayer player1;
+        private MockPlayer player2;
+
+        public MockPlayConfig(MockPlayer player1, MockPlayer player2) {
+            super(null, null); // We pass null since we won't use 'in' in the mock
+            this.player1 = player1;
+            this.player2 = player2;
+        }
+
+        @Override
+        public Player initializePlayer1() {
+            return player1;
+        }
+
+        @Override
+        public Player initializePlayer2() {
+            return player2;
+        }
+    }
+
     // MockPlayer class to simulate player moves
     public class MockPlayer extends Player {
         private Queue<PlayerResponse> moves;
@@ -79,7 +102,7 @@ public class GameControlTest {
         MockPlayer p1 = new MockPlayer(1, p1Moves, "User1");
         MockPlayer p2 = new MockPlayer(2, p2Moves, "User2");
 
-        PlayConfig playConfig = new PlayConfig(p1, p2);
+        PlayConfig playConfig = new MockPlayConfig(p1, p2);
         MockMenu mockMenu = new MockMenu(Arrays.asList(playConfig));
 
         GameControl gameControl = new GameControl(mockMenu);
@@ -108,7 +131,7 @@ public class GameControlTest {
         MockPlayer cpu = new MockPlayer(1, cpuMoves, "CPU");
         MockPlayer user = new MockPlayer(2, userMoves, "User");
 
-        PlayConfig playConfig = new PlayConfig(cpu, user);
+        PlayConfig playConfig = new MockPlayConfig(cpu, user);
         MockMenu mockMenu = new MockMenu(Arrays.asList(playConfig));
 
         GameControl gameControl = new GameControl(mockMenu);

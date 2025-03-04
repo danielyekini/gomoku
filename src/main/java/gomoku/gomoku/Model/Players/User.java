@@ -15,13 +15,9 @@ public class User extends Player {
 
     @Override
     public PlayerResponse play(Board state) {
-        return play();
-    }
-    
-    public PlayerResponse play() {
         System.out.println("Type 'main' to return to menu, or 'new game' to start a new game.");
         String userInput = input.String("Place your piece: ");
-        while (!isValid(userInput)) {
+        while (!isValid(userInput, state)) {
             System.out.println("\nInvalid Input!");
             userInput = input.String("Input a letter from A - O followed by a number from 1 - 15 (e.g. F8): ");
         }
@@ -35,7 +31,7 @@ public class User extends Player {
         return new PlayerResponse(PlayState.TRYNEXTTURN, userInput);
     }
 
-    public boolean isValid(String userInput) {
+    public boolean isValid(String userInput, Board state) {
         if (userInput.equals("main")) {
             return true;
         } else if (userInput.equals("new")) {
@@ -47,8 +43,9 @@ public class User extends Player {
                 if(Character.isDigit(userInput.charAt(1))) {
                     if (userInput.length() == 3 && !Character.isDigit(userInput.charAt(2))) {
                         return false;
+                    } else if (state.posAvailable(userInput)) {
+                        return true;
                     }
-                    return true;
                 }
             }
         }

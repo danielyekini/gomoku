@@ -20,14 +20,23 @@ public class GameControl {
 
     public void start() {
         ProgramState state = ProgramState.MENU;
+        GameConfig config;
         while (state != ProgramState.TERMINATE) {
             switch (state) {
                 case MENU:
-                    
-                    GameConfig config = menu.getConfig();
-                    state = configureGame(config);
+                    config = menu.getConfig();
+                    state =  (config != null) ? 
+                        configureGame(config) :
+                        ProgramState.TERMINATE;
                     break;
-            
+
+                case ENDGAME:
+                    config = menu.playAgain();
+                    state =  (config != null) ? 
+                        configureGame(config) :
+                        ProgramState.MENU;
+                    break;
+
                 default:
                     break;
             }
@@ -35,15 +44,21 @@ public class GameControl {
     }
 
     private ProgramState configureGame(GameConfig config) {
-
-        if (config == null) {
-            return ProgramState.TERMINATE;
-        }
         
         if (config instanceof PlayConfig) {
-            if (executePlay((PlayConfig) config) == null) {
-                return ProgramState.MENU;
-            };
+            PlayState playState = PlayState.NEWGAME;
+            while (playState == PlayState.NEWGAME) {
+                playState = executePlay((PlayConfig) config);
+            }
+
+            switch (playState) {
+                case MENU:
+                    return ProgramState.MENU;
+            
+                case ENDGAME:
+                    return ProgramState.ENDGAME;
+            }
+            
         } else if (config instanceof SimulateConfig) {
             executeSimulate((SimulateConfig) config);
         } else if (config instanceof TrainConfig) {
@@ -57,12 +72,12 @@ public class GameControl {
 
     private PlayState executePlay(GameConfig config) {
         // Initalise new board object
-        Board board = config.getBoard();
+        Board board = config.initializeBoard();
         board.printBoard();
 
-        // Assign players
-        Player p1 = config.getPlayer1();
-        Player p2 = config.getPlayer2();
+        // Initialise players
+        Player p1 = config.initializePlayer1();
+        Player p2 = config.initializePlayer2();
         Player lastPlayer = null;
 
         // Run game
@@ -75,6 +90,7 @@ public class GameControl {
                     // Check for new game request
                     return PlayState.NEWGAME;
                 }
+
                 case MENU -> {
                     // Check for menu request
                     return PlayState.MENU;
@@ -82,6 +98,7 @@ public class GameControl {
 
                 default -> {
                     // TRYNEXTTURN
+
                     // End game if player wins
                     lastPlayer = p1;
                     win = board.checkWin();
@@ -95,17 +112,18 @@ public class GameControl {
                         case NEWGAME -> {
                             // Check for new game request
                             return PlayState.NEWGAME;
-                    }
+                        }
+                        
                         case MENU -> {
                             // Check for menu request
                             return PlayState.MENU;
-                    }
+                        }
                     
                         default -> {
                             // TRYNEXTTURN
                             lastPlayer = p2;
                             win = board.checkWin();
-                    }
+                        }
                     }
                 }
             }
@@ -133,7 +151,9 @@ public class GameControl {
             }
         }
 
-        return null;
+        
+
+        return PlayState.ENDGAME;
     }
 
     private void executeSimulate(SimulateConfig config) {
@@ -159,9 +179,15 @@ public class GameControl {
             }
             default -> {
                 board.placePosition(player.number, response.getPos());
+                printLine();
+                System.out.println("\nPlayer " + player.number + "'s Move: " + response.getPos());
                 board.printBoard();
                 return response.type;
             }
         }
+    }
+
+    private void printLine() {
+        System.out.println("_".repeat(50));
     }
 }

@@ -45,8 +45,8 @@ public class MenuTest {
         assertNotNull(config, "Config should not be null");
         assertTrue(config instanceof PlayConfig, "Config should be instance of PlayConfig");
         PlayConfig playConfig = (PlayConfig) config;
-        assertTrue(playConfig.getPlayer1() instanceof User, "Player1 should be instance of User");
-        assertTrue(playConfig.getPlayer2() instanceof User, "Player2 should be instance of User");
+        assertTrue(playConfig.initializePlayer1() instanceof User, "Player1 should be instance of User");
+        assertTrue(playConfig.initializePlayer2() instanceof User, "Player2 should be instance of User");
     }
 
     @org.junit.jupiter.api.Test
@@ -64,8 +64,8 @@ public class MenuTest {
         assertNotNull(config, "Config should not be null");
         assertTrue(config instanceof PlayConfig, "Config should be instance of PlayConfig");
         PlayConfig playConfig = (PlayConfig) config;
-        assertTrue(playConfig.getPlayer1() instanceof User, "Player1 should be instance of User");
-        assertTrue(playConfig.getPlayer2() instanceof CPURandom, "Player2 should be instance of CPURandom");
+        assertTrue(playConfig.initializePlayer1() instanceof User, "Player1 should be instance of User");
+        assertTrue(playConfig.initializePlayer2() instanceof CPURandom, "Player2 should be instance of CPURandom");
     }
 
     @org.junit.jupiter.api.Test
@@ -129,8 +129,8 @@ public class MenuTest {
         assertNotNull(config, "Config should not be null after invalid inputs");
         assertTrue(config instanceof PlayConfig, "Config should be instance of PlayConfig");
         PlayConfig playConfig = (PlayConfig) config;
-        assertTrue(playConfig.getPlayer1() instanceof User, "Player1 should be instance of User");
-        assertTrue(playConfig.getPlayer2() instanceof CPURandom, "Player2 should be instance of CPURandom");
+        assertTrue(playConfig.initializePlayer1() instanceof User, "Player1 should be instance of User");
+        assertTrue(playConfig.initializePlayer2() instanceof CPURandom, "Player2 should be instance of CPURandom");
     }
 
     @org.junit.jupiter.api.Test
@@ -162,8 +162,8 @@ public class MenuTest {
         PlayConfig config = (PlayConfig) menu.getConfig();
 
         assertNotNull(config, "Config should not be null");
-        assertTrue(config.getPlayer1() instanceof CPURandom, "Player1 should be instance of CPURandom");
-        assertTrue(config.getPlayer2() instanceof User, "Player2 should be instance of User");
+        assertTrue(config.initializePlayer1() instanceof CPURandom, "Player1 should be instance of CPURandom");
+        assertTrue(config.initializePlayer2() instanceof User, "Player2 should be instance of User");
     }
 
     @org.junit.jupiter.api.Test
@@ -180,8 +180,8 @@ public class MenuTest {
         PlayConfig config = (PlayConfig) menu.getConfig();
 
         assertNotNull(config, "Config should not be null after invalid player turn");
-        assertTrue(config.getPlayer1() instanceof CPURandom, "Player1 should be instance of CPURandom");
-        assertTrue(config.getPlayer2() instanceof User, "Player2 should be instance of User");
+        assertTrue(config.initializePlayer1() instanceof CPURandom, "Player1 should be instance of CPURandom");
+        assertTrue(config.initializePlayer2() instanceof User, "Player2 should be instance of User");
     }
 
     @org.junit.jupiter.api.Test

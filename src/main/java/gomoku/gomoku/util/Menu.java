@@ -1,18 +1,15 @@
 package gomoku.gomoku.util;
 
-import gomoku.gomoku.Model.Players.CPUPlayers.CPUProximity;
-import gomoku.gomoku.Model.Players.CPUPlayers.CPURandom;
-import gomoku.gomoku.Model.Players.Player;
-import gomoku.gomoku.Model.Players.User;
-import gomoku.gomoku.Services.ProximityService;
 import gomoku.gomoku.util.configure.GameConfig;
 import gomoku.gomoku.util.configure.PlayConfig;
 import gomoku.gomoku.util.configure.SimulateConfig;
 import gomoku.gomoku.util.enums.CpuOption;
 import gomoku.gomoku.util.enums.MainOption;
 import gomoku.gomoku.util.enums.MenuType;
+import gomoku.gomoku.util.enums.PlayAgainOption;
 import gomoku.gomoku.util.enums.PlayOption;
 import gomoku.gomoku.util.enums.PlayerOption;
+import gomoku.gomoku.util.enums.PlayerType;
 
 public class Menu {
     Input in;
@@ -65,6 +62,38 @@ public class Menu {
 
         return gameConfig;
     }
+    
+    public GameConfig playAgain() {
+        GameConfig gameConfig = null;
+        PlayAgainOption state = PlayAgainOption.MENU;
+        boolean exit = false;
+
+        while (!exit) {
+            switch (state) {
+                case YES:
+
+                    gameConfig = getConfig(MainOption.PLAY);
+
+                    if (gameConfig != null) {
+                        return gameConfig;
+                    }
+
+                    state = PlayAgainOption.MENU;
+                    break;
+
+                case NO:
+
+                    exit = true;
+                    break;
+
+                case MENU:
+                    
+                    state = PlayAgainOption.fromInt(menuOptions(MenuType.PLAYAGAIN));
+            }
+        }
+
+        return gameConfig;
+    }
 
     private int menuOptions(MenuType menuType) {
         int numOptions = 0;
@@ -74,9 +103,10 @@ public class Menu {
         switch (menuType) {
             case MAIN:
 
+                System.out.println("> MAIN\n");
                 for (MainOption option : MainOption.values()) {
                     if (option.value() != 0) {
-                        System.out.println(option.value() + ". " + option.name());
+                        System.out.println("     > [" + option.value() + "] " + option.name());
                     }
                 }
                 numOptions = MainOption.values().length-1;
@@ -84,28 +114,39 @@ public class Menu {
 
             case PLAY:
 
+                System.out.println("> SELECT PLAYERS\n");
                 for (PlayOption option : PlayOption.values()) {
-                    System.out.println(option.value() + ". " + option.name());
+                    System.out.println("     > [" + option.value() + "] " + option.name());
                 }
                 numOptions = PlayOption.values().length;
                 break;
                 
             case CPU:
 
-                System.out.println("Select CPU difficulty");
+                System.out.println("> SELECT CPU DIFFICULTY\n");
                 for (CpuOption option : CpuOption.values()) {
-                    System.out.println(option.value() + ". " + option.name());
+                    System.out.println("     > [" + option.value() + "] " + option.name());
                 }
                 numOptions = CpuOption.values().length;
                 break;
 
             case PLAYER:
 
-                System.out.println("Do you want to be player 1 or player 2?\n");
+                System.out.println("> DO YOU WANT TO BE PLAYER 1 OR PLAYER 2?\n");
                 for (PlayerOption option : PlayerOption.values()) {
-                    System.out.println(option.value() + ". " + option.name());
+                    System.out.println("     > [" + option.value() + "] " + option.name());
                 }
                 numOptions = PlayerOption.values().length;
+                break;
+
+            case PLAYAGAIN:
+                System.out.println("> PLAY AGAIN?:\n");
+                for (PlayAgainOption option : PlayAgainOption.values()) {
+                    if (option.value() != 0) {
+                        System.out.println("     > [" + option.value() + "] " + option.name());
+                    }
+                }
+                numOptions = PlayAgainOption.values().length-1;
                 break;
 
             default:
@@ -124,16 +165,35 @@ public class Menu {
         return option;
     }
 
+    private GameConfig getConfig(MainOption menu) {
+        GameConfig gameConfig = null;
+        MainOption state = menu;
+        switch (state) {
+            case PLAY:
+                gameConfig = configurePlay();
+                break;
+            case SIMULATE:
+                // System.out.println("\nTO BE IMPLEMENTED");
+                gameConfig = configureSimulate();
+                break;
+            case TRAIN:
+                System.out.println("\nTO BE IMPLEMENTED");
+                break;
+            default:
+                System.out.println("\nInvalid input! Try again.\n");
+        }
+
+        return gameConfig;
+    }
+
     private GameConfig configurePlay() {
         PlayOption option = PlayOption.fromInt(menuOptions(MenuType.PLAY));
-        Player player1 = new User();
-        Player player2 = null;
+        PlayerType player1 = PlayerType.USER;
+        PlayerType player2 = null;
 
         switch (option) {
             case USER_VS_USER:
-                player2 = new User();
-                player1.number = 1;
-                player2.number = 2;
+                player2 = PlayerType.USER;
                 break;
             case USER_VS_CPU: 
                 player2 = selectCPUPlayer();
@@ -141,24 +201,20 @@ public class Menu {
                 if (player2 == null) {
                     return null;
                 }
+
+                int playerTurn = playerTurn();
                 
-                switch (playerTurn()) {
-                    case 1:
-                        player1.number = 1;
-                        player2.number = 2;
-                        break;
-                    case 2:
-                        Player p = player2;
-                        player2 = player1;
-                        player1 = p;
-                        player1.number = 1;
-                        player2.number = 2;
-                        break;
-                
-                    default:
-                        return null;
-                }
+                if (playerTurn == 2) {
+                    PlayerType temp = player1;
+                    player1 = player2;
+                    player2 = temp;
+                    break;
+                } else if (playerTurn == -1) return null;
                 break;
+            case HOTKEY:
+                player2 = player1;
+                player1 = PlayerType.PROXIMITY;
+                return new PlayConfig(player1, player2);
             case BACK:
                 return null;
         }
@@ -171,14 +227,14 @@ public class Menu {
         // System.out.println("Do you want to be player 1 or player 2?\n");
     }
 
-    private Player selectCPUPlayer() {
+    private PlayerType selectCPUPlayer() {
         CpuOption option = CpuOption.fromInt(menuOptions(MenuType.CPU));
 
         switch (option) {
             case RANDOM:
-                return new CPURandom();
+                return PlayerType.RANDOM;
             case PROXIMITY:
-                return new CPUProximity(new ProximityService());
+                return PlayerType.PROXIMITY;
             case BACK:
                 return null;
         }

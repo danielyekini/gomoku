@@ -70,6 +70,13 @@ public class Board {
         return new int[] {posX, posY};
     }
 
+    public boolean posAvailable(String pos) {
+        int[] axis = toAxis(pos);
+        int posY = axis[1];
+        int posX = axis[0];
+        return grid[posY][posX] == 0;
+    }
+
     public boolean posAvailable(int posX, int posY) {
         return grid[posY][posX] == 0;
     }
@@ -129,6 +136,8 @@ public class Board {
             availableMoves.remove(position.toUpperCase());
             lastPos = axis;
             return true;
+        } else if (grid[lastPos[1]][lastPos[0]] != player) {
+            System.out.println("\nWrong Player!\n");
         } else {
             System.out.println("\nPosition Taken!\n");
         }
@@ -189,6 +198,20 @@ public class Board {
         int endX = (lastPos[0]+4 > 14) ? 14 : lastPos[0]+4;
         int endY = (lastPos[1]+4 > 14) ? 14 : lastPos[1]+4;
 
+        // Realign ratios for edge cases
+        int diffX = lastPos[0] - startX;
+        int diffY = lastPos[1] - startY;
+        while (diffX != diffY) {
+            if (diffX > diffY) {
+                startX++;
+                diffX = lastPos[0] - startX;
+            }
+            if (diffY > diffX) {
+                startY++;
+                diffY = lastPos[1] - startY;
+            }
+        }
+
         // Initialize count of consecutive pieces
         int count = 0;
 
@@ -215,6 +238,20 @@ public class Board {
         int startY = (lastPos[1]-4 < 0) ? 0 : lastPos[1]-4;
         int endX = (lastPos[0]-4 < 0) ? 0 : lastPos[0]-4;
         int endY = (lastPos[1]+4 > 14) ? 14 : lastPos[1]+4;
+
+        // Realign ratios for edge cases
+        int diffX = startX - lastPos[0];
+        int diffY = lastPos[1] - startY;
+        while (diffX != diffY) {
+            if (diffX > diffY) {
+                startX--;
+                diffX = startX - lastPos[0];
+            }
+            if (diffY > diffX) {
+                startY++;
+                diffY = lastPos[1] - startY;
+            }
+        }
 
         // Initialize count of consecutive pieces
         int count = 0;
