@@ -1,10 +1,13 @@
 package gomoku.gomoku.util.configure;
 
-import gomoku.gomoku.Model.Player;
+import gomoku.gomoku.Model.Board;
+import gomoku.gomoku.Model.Players.Player;
 
 public interface GameConfig {
-    
-    public Player getPlayer1();
 
-    public Player getPlayer2();
+    public Board initializeBoard();
+    
+    public Player initializePlayer1();
+
+    public Player initializePlayer2();
 }

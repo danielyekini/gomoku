@@ -1,11 +1,13 @@
-package gomoku.gomoku.Model.CPUPlayers;
+package gomoku.gomoku.Model.Players.CPUPlayers;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import gomoku.gomoku.Model.Board;
 import gomoku.gomoku.Services.IProximityService;
+import gomoku.gomoku.util.PlayerResponse;
+import gomoku.gomoku.util.enums.PlayState;
 
 public class CPUProximity extends CPUPlayer {
 
@@ -13,6 +15,7 @@ public class CPUProximity extends CPUPlayer {
     private boolean firstMove;
     private String lastMove;
     private IProximityService service;
+    private Random random = new Random();
 
     public CPUProximity(IProximityService proximityService) {
         this.firstMove = true;
@@ -21,8 +24,7 @@ public class CPUProximity extends CPUPlayer {
     }
 
     @Override
-    public String play(Board board) {
-        Random random = new Random();
+    public PlayerResponse play(Board board) {
         List<String> availableMoves;
         
         if (firstMove) {
@@ -36,7 +38,7 @@ public class CPUProximity extends CPUPlayer {
             availableMoves = service.getAvailableMoves(board, proximityArea);
 
             // If no moves available, expand proximity area
-            while (availableMoves.size() == 0) {
+            while (availableMoves.isEmpty()) {
                 proximityArea = service.expandProximityArea(proximityArea);
                 availableMoves = service.getAvailableMoves(board, proximityArea);
             }
@@ -45,11 +47,11 @@ public class CPUProximity extends CPUPlayer {
         String move = availableMoves.get(random.nextInt(availableMoves.size()));
         lastMove = move;
 
-        return move;
+        return new PlayerResponse(PlayState.TRYNEXTTURN, move);
     }
 
     private List<String> getStartArea() {
-        List<String> startArea = new ArrayList<>();
+        List<String> area = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
 
         for (int y = 0; y < 7; y++) {
@@ -58,12 +60,12 @@ public class CPUProximity extends CPUPlayer {
                 letter+=x;
                 sb.append(letter);
                 sb.append(11 - y);
-                startArea.add(sb.toString());
+                area.add(sb.toString());
                 sb.setLength(0);
             }
         }
 
-        return startArea;
+        return area;
     }
     
 }

@@ -1,11 +1,11 @@
 package gomoku.gomoku.util.enums;
 
-public enum PlayOption {
-    USER_VS_USER(1), USER_VS_CPU(2), HOTKEY(3), BACK(4);
+public enum PlayAgainOption {
+    MENU(0), YES(1), NO(2);
 
     private final int value;
 
-    PlayOption(int value) {
+    PlayAgainOption(int value) {
         this.value = value;
     }
 
@@ -13,8 +13,8 @@ public enum PlayOption {
         return value;
     }
 
-    public static PlayOption fromInt(int value) {
-        for (PlayOption o : PlayOption.values()) {
+    public static PlayAgainOption fromInt(int value) {
+        for (PlayAgainOption o : PlayAgainOption.values()) {
             if (o.value == value) {
                 return o;
             }

@@ -1,0 +1,7 @@
+1. fix bugs (sonarqube)
+2. design and implement api endpoints
+3. Console UI tiddlybits
+4. 
+
+Console UI tiddlybits:
+    - Slow rolls
