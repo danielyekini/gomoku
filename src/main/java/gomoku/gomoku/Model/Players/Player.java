@@ -5,8 +5,16 @@ import gomoku.gomoku.util.PlayerResponse;
 
 public abstract class Player {
 
-    public int number;
+    private int number;
     
     public abstract PlayerResponse play(Board state);
+
+    public int getNumber() {
+        return this.number;
+    }
+
+    public void setNumber(int num) {
+        this.number = num;
+    }
     
 }

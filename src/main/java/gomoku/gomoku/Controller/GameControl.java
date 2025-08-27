@@ -133,19 +133,21 @@ public class GameControl {
         
         switch (win) {
             case HORIZONTAL:
-                System.out.println("\nHorizontal Win by player " + lastPlayer.number + "\n");
+                System.out.println("\nHorizontal Win by player " + lastPlayer.getNumber() + "\n");
                 break;
             case VERTICAL:
-                System.out.println("\nVertical Win by player " + lastPlayer.number + "\n");
+                System.out.println("\nVertical Win by player " + lastPlayer.getNumber() + "\n");
                 break;
             case DIAGONALLEFTTORIGHT:
-                System.out.println("\nDiagonal Win: Left to right by player " + lastPlayer.number + "\n");
+                System.out.println("\nDiagonal Win: Left to right by player " + lastPlayer.getNumber() + "\n");
                 break;
             case DIAGONALRIGHTTOLEFT:
-                System.out.println("\nDiagonal Win: Right to left by player " + lastPlayer.number + "\n");
+                System.out.println("\nDiagonal Win: Right to left by player " + lastPlayer.getNumber() + "\n");
                 break;
             case DRAW:
-                System.out.println("\nThis game is a draw!" + "\n");
+                System.out.println("""
+                    This game is a draw!
+                """);
                 break;
             default:
                 break;
@@ -178,9 +180,9 @@ public class GameControl {
                 return response.type;
             }
             default -> {
-                board.placePosition(player.number, response.getPos());
+                board.placePosition(player.getNumber(), response.getPos());
                 printLine();
-                System.out.println("\nPlayer " + player.number + "'s Move: " + response.getPos());
+                System.out.println("\nPlayer " + player.getNumber() + "'s Move: " + response.getPos());
                 board.printBoard();
                 return response.type;
             }

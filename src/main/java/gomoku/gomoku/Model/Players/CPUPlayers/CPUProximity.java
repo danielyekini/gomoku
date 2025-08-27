@@ -15,6 +15,7 @@ public class CPUProximity extends CPUPlayer {
     private boolean firstMove;
     private String lastMove;
     private IProximityService service;
+    private Random random = new Random();
 
     public CPUProximity(IProximityService proximityService) {
         this.firstMove = true;
@@ -24,7 +25,6 @@ public class CPUProximity extends CPUPlayer {
 
     @Override
     public PlayerResponse play(Board board) {
-        Random random = new Random();
         List<String> availableMoves;
         
         if (firstMove) {
@@ -38,7 +38,7 @@ public class CPUProximity extends CPUPlayer {
             availableMoves = service.getAvailableMoves(board, proximityArea);
 
             // If no moves available, expand proximity area
-            while (availableMoves.size() == 0) {
+            while (availableMoves.isEmpty()) {
                 proximityArea = service.expandProximityArea(proximityArea);
                 availableMoves = service.getAvailableMoves(board, proximityArea);
             }
@@ -51,7 +51,7 @@ public class CPUProximity extends CPUPlayer {
     }
 
     private List<String> getStartArea() {
-        List<String> startArea = new ArrayList<>();
+        List<String> area = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
 
         for (int y = 0; y < 7; y++) {
@@ -60,12 +60,12 @@ public class CPUProximity extends CPUPlayer {
                 letter+=x;
                 sb.append(letter);
                 sb.append(11 - y);
-                startArea.add(sb.toString());
+                area.add(sb.toString());
                 sb.setLength(0);
             }
         }
 
-        return startArea;
+        return area;
     }
     
 }

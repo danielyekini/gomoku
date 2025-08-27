@@ -9,13 +9,13 @@ import gomoku.gomoku.util.enums.PlayState;
 
 public class CPURandom extends CPUPlayer {
 
-    int firstTurn = 0;
+    private int firstTurn = 0;
+    private Random random = new Random();
 
     @Override
     public PlayerResponse play(Board board) {
         List<String> availableMoves = board.getAvailableMoves();
 
-        Random random = new Random();
         String move = availableMoves.get(random.nextInt(availableMoves.size()));
         
         if (firstTurn == 0) {

@@ -63,7 +63,7 @@ public class GameControlTest {
         private String name;
 
         public MockPlayer(int number, List<PlayerResponse> moves, String name) {
-            this.number = number;
+            this.setNumber(number);
             this.moves = new LinkedList<>(moves);
             this.name = name;
         }

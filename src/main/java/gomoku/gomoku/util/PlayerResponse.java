@@ -5,6 +5,7 @@ import gomoku.gomoku.util.enums.PlayState;
 public class PlayerResponse {
     public PlayState type;
     private String move;
+    
 
     public PlayerResponse(PlayState type) {
         this.type = type;

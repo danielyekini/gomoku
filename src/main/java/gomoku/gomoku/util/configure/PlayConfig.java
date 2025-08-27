@@ -27,14 +27,14 @@ public class PlayConfig implements GameConfig {
     @Override
     public Player initializePlayer1() {
         Player p1 = initializePlayer(player1);
-        p1.number = 1;
+        p1.setNumber(1);
         return p1;
     }
 
     @Override
     public Player initializePlayer2() {
         Player p2 = initializePlayer(player2);
-        p2.number = 2;
+        p2.setNumber(2);
         return p2;
     }
 
