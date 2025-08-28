@@ -8,7 +8,12 @@ public class User extends Player {
     Input in;
 
     public User() {
-        in = new Input();
+        this.in = new Input();
+    }
+
+    @Override
+    public String play(Board state) {
+        return play();
     }
     
     public String play() {
