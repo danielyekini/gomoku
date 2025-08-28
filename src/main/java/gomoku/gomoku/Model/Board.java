@@ -109,6 +109,8 @@ public class Board {
 
     public int getGridSize() { return gridSize; }
     
+    public int[][] getGrid() { return grid; }
+    
     public boolean placePosition(int player, String position ) {
         // Check if player number is valid
         if (player < 1 || player > 2) {
